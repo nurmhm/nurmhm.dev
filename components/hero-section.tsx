@@ -95,7 +95,7 @@ class HealthcareApp {
             className="space-y-4"
           >
             <p className="text-lg text-slate-200 leading-relaxed max-w-2xl">
-              Web Developer with 2+ years of experience building enterprise-grade applications. Currently at{" "}
+              Web Developer with 1.5+ years of experience building enterprise-grade applications. Currently at{" "}
               <span className="text-emerald-400 font-semibold">Trodad International</span> developing E-commerce ERP,
               Doctor Appointment Systems, Hospital Portfolio, and Business Management platforms.
             </p>
