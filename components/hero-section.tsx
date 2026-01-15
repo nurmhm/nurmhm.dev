@@ -15,6 +15,12 @@ export function HeroSection({ onToggleCLI }: HeroSectionProps) {
 
   const handleDownloadResume = () => {
     setDownloadMessage("Simulating download... (In a real app, your resume would download here!)")
+      const link = document.createElement("a")
+  link.href = "/nur_resume.pdf"
+  link.download = "Nur_Md_Resume.pdf"
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
     setTimeout(() => {
       setDownloadMessage(null)
     }, 3000)
