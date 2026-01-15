@@ -57,7 +57,7 @@ class HealthcareApp {
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-3xl animate-pulse delay-2000"></div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center relative z-10">
+      <div className="container grid lg:grid-cols-2 gap-12 items-center relative z-10">
         {/* Left Side - Main Content */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -178,29 +178,30 @@ class HealthcareApp {
                   <Linkedin className="w-5 h-5" />
                 </a>
               </Button>
-               <Button
-                size="icon"
-                variant="outline"
-                className="border-slate-600 hover:bg-slate-800 bg-transparent text-slate-200"
-                asChild
-              >
-                <a
-                  href="https://linkedin.com/in/nurmhm7228"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title="Medium Profile"
-                >
-                  <img src="/medium.png" alt="" />
-                </a>
-              </Button>
+            
               <Button
                 size="icon"
                 variant="outline"
                 className="border-slate-600 hover:bg-slate-800 bg-transparent text-slate-200"
                 asChild
               >
-                <a href="mailto:nurmd7228@gmail.com" title="Send Email">
+                <a href="mailto:nurmhm.dev@gmail.com" title="Send Email">
                   <Mail className="w-5 h-5" />
+                </a>
+              </Button>
+                 <Button
+                size="icon"
+                variant="outline"
+                className="border-slate-600 hover:bg-slate-800 bg-transparent text-slate-200"
+                asChild
+              >
+                <a
+                  href="https://medium.com/@nurmhm"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title="Medium Profile"
+                >
+                  <img src="/medium.png" alt="" />
                 </a>
               </Button>
             </div>

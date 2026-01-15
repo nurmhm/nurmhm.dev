@@ -8,8 +8,8 @@ const testimonials = [
   {
     quote:
       "Nur delivered exceptional work on our E-commerce ERP system. His expertise in Next.js and Prisma helped us build a robust, scalable platform. Highly professional and communicative throughout the project.",
-    name: "Mohammad Rahman",
-    title: "CTO",
+    name: "MD. Ruhul Amin",
+    title: "Senior Developer",
     company: "Trodad International",
     avatar: "/professional-man-portrait.png",
     rating: 5,
@@ -17,8 +17,8 @@ const testimonials = [
   {
     quote:
       "Working with Nur on the RAJSEBA platform was a fantastic experience. He consistently delivered high-quality, pixel-perfect UIs and always went the extra mile to ensure optimal performance.",
-    name: "Ahmed Hossain",
-    title: "Project Manager",
+    name: "Nazmul Hossain",
+    title: "CEO",
     company: "Ankabut Software",
     avatar: "/professional-young-man.png",
     rating: 5,
@@ -26,9 +26,9 @@ const testimonials = [
   {
     quote:
       "Nur's expertise in React and Web development is evident in every project he touches. His attention to detail and ability to solve complex problems makes him invaluable to any development team.",
-    name: "Sarah Khan",
+  name: "MD. Rafi",
     title: "Senior Developer",
-    company: "Tech Solutions BD",
+    company: "Trodad International",
     avatar: "/professional-woman-portrait.png",
     rating: 5,
   },

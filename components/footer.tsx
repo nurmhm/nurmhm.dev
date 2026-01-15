@@ -80,7 +80,7 @@ export function Footer() {
             >
               <Linkedin className="w-5 h-5" />
             </a>
-            <a href="mailto:nurmd7228@gmail.com" className="hover:text-amber-400 transition-colors" title="Email">
+            <a href="mailto:nurmhm.dev@gmail.com" className="hover:text-amber-400 transition-colors" title="Email">
               <Mail className="w-5 h-5" />
             </a>
           </div>

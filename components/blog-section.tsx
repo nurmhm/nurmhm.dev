@@ -7,34 +7,34 @@ import { Calendar, ArrowRight, Clock } from "lucide-react"
 
 const blogPosts = [
   {
-    title: "Building Scalable APIs with Prisma and PostgreSQL",
-    date: "November 20, 2025",
-    readTime: "8 min read",
+    title: "Goodbye Boilerplate: Why Zustand is the State Management You’ve Been Waiting For",
+    date: "Dec 28, 2025",
+    readTime: "2 min read",
     excerpt:
-      "Learn how to design efficient database schemas with Prisma ORM and PostgreSQL for enterprise applications. Covers migrations, relations, and performance optimization.",
+      "When you build a web application, communication between your app and the server is essential. When your web application or Node.js server wants to communicate with another server, Axios works as the medium.",
     image: "/database-schema-prisma-postgresql-dark-theme.jpg",
-    tags: ["Prisma", "PostgreSQL", "Backend"],
-    link: "#",
+    tags: ["React", "State Management", "Zustand", "JavaScript"],
+    link: "https://medium.com/@nurmhm/goodbye-boilerplate-why-zustand-is-the-state-management-youve-been-waiting-for-29bfdbd267d2",
   },
   {
-    title: "Web Authentication with Next.js and Node.js",
-    date: "November 10, 2025",
-    readTime: "10 min read",
+    title: "Axios Explained: A Beginner-Friendly Guide to HTTP Requests in JavaScript .",
+    date: "Sep 25, 2025",
+    readTime: "5 min read",
     excerpt:
       "Implement secure authentication in your Next.js applications using JWT, sessions, and best security practices. Complete guide from frontend to backend.",
     image: "/authentication-security-login-dark-theme.jpg",
-    tags: ["Next.js", "Auth", "Security"],
-    link: "#",
+    tags: ["Web Development", "Website", "Data Fetching", "JavaScript"],
+    link: "https://medium.com/@nurmhm/axios-explained-a-beginner-friendly-guide-to-http-requests-in-javascript-a281825d0fd7",
   },
   {
-    title: "Building Enterprise ERP Systems: Lessons Learned",
-    date: "October 28, 2025",
-    readTime: "12 min read",
+    title: "Unsupported color function “oklch” error in html2canvas within a Next.js project",
+    date: "Jul 16, 2025",
+    readTime: "3 min read",
     excerpt:
-      "Insights from building large-scale ERP systems including architecture decisions, module design, and scaling strategies for growing businesses.",
+      "Recently, I was working on a feature in my Next.js project using jsPDF and html2canvas to download HTML as PDF. Everything was working fine until I clicked the download button and saw this error in the console: Uncaught (in promise) Error: Attempting to parse an unsupported color function oklch",
     image: "/erp-system-dashboard-enterprise-dark-theme.jpg",
-    tags: ["ERP", "Architecture", "Enterprise"],
-    link: "#",
+    tags: ["Jspdf", "Html2canvas", "Next.js", "Tailwind CSS"],
+    link: "https://medium.com/@nurmhm/unsupported-color-function-oklch-error-in-html2canvas-within-a-next-js-project-0d69037b8e85",
   },
 ]
 

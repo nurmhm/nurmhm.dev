@@ -32,7 +32,8 @@ const projects = [
       "Multi-vendor marketplace support",
       "Sales reports and business intelligence",
     ],
-    status: "In Development",
+    status: "Live",
+    liveUrl: "https://feroza.com.bd/",
     statusColor: "bg-amber-600",
     company: "Trodad International",
     stats: {
@@ -56,7 +57,8 @@ const projects = [
       "Medical record management",
       "Admin dashboard for clinic management",
     ],
-    status: "In Development",
+    status: "Live",
+    liveUrl: "https://medishifaa.com/",
     statusColor: "bg-amber-600",
     company: "Trodad International",
     stats: {
@@ -65,79 +67,79 @@ const projects = [
       integrations: "5+",
     },
   },
-  {
-    title: "Hospital Portfolio System",
-    subtitle: "Hospital Management & Showcase",
-    icon: Building,
-    description:
-      "A comprehensive hospital management and portfolio platform showcasing hospital services, departments, doctors, and facilities. Includes patient feedback and inquiry system.",
-    image: "/hospital-management-portfolio-dark-theme.jpg",
-    technologies: ["Next.js", "Node.js", "PostgreSQL", "Prisma", "Tailwind CSS", "Framer Motion"],
-    features: [
-      "Department and service showcase",
-      "Doctor directory with specializations",
-      "Patient testimonials and reviews",
-      "Online inquiry and contact forms",
-      "News and updates management",
-    ],
-    status: "In Development",
-    statusColor: "bg-amber-600",
-    company: "Trodad International",
-    stats: {
-      pages: "15+",
-      components: "30+",
-      animations: "20+",
-    },
-  },
-  {
-    title: "Business Management System",
-    subtitle: "All-in-One Business Operations",
-    icon: Briefcase,
-    description:
-      "A unified platform for managing business operations including project management, team collaboration, expense tracking, client management, and comprehensive reporting.",
-    image: "/business-management-dashboard-dark-modern.jpg",
-    technologies: ["React", "Node.js", "Express", "PostgreSQL", "Prisma", "Chart.js", "Tailwind CSS"],
-    features: [
-      "Project and task management with Kanban boards",
-      "Team collaboration and communication",
-      "Expense and invoice management",
-      "Client and vendor management",
-      "Business analytics and reporting",
-    ],
-    status: "In Development",
-    statusColor: "bg-amber-600",
-    company: "Trodad International",
-    stats: {
-      dashboards: "5+",
-      reports: "10+",
-      workflows: "8+",
-    },
-  },
-  {
-    title: "RAJSEBA",
-    subtitle: "Home Service Booking Platform",
-    icon: Layout,
-    description:
-      "A comprehensive service booking platform connecting customers with verified service providers for home services including cleaning, repairs, maintenance, and more.",
-    image: "/home-service-booking-platform-dark.jpg",
-    technologies: ["Next.js", "TypeScript", "Tailwind CSS", "API Integration", "Payment Gateway"],
-    features: [
-      "Service provider verification system",
-      "Real-time booking and scheduling",
-      "Integrated payment processing",
-      "Customer review and rating system",
-      "Admin dashboard for service management",
-    ],
-    status: "Live",
-    statusColor: "bg-emerald-600",
-    liveUrl: "https://rajseba.com",
-    company: "Ankabut Software",
-    stats: {
-      services: "100+",
-      providers: "500+",
-      bookings: "2000+",
-    },
-  },
+  // {
+  //   title: "Hospital Portfolio System",
+  //   subtitle: "Hospital Management & Showcase",
+  //   icon: Building,
+  //   description:
+  //     "A comprehensive hospital management and portfolio platform showcasing hospital services, departments, doctors, and facilities. Includes patient feedback and inquiry system.",
+  //   image: "/hospital-management-portfolio-dark-theme.jpg",
+  //   technologies: ["Next.js", "Node.js", "PostgreSQL", "Prisma", "Tailwind CSS", "Framer Motion"],
+  //   features: [
+  //     "Department and service showcase",
+  //     "Doctor directory with specializations",
+  //     "Patient testimonials and reviews",
+  //     "Online inquiry and contact forms",
+  //     "News and updates management",
+  //   ],
+  //   status: "In Development",
+  //   statusColor: "bg-amber-600",
+  //   company: "Trodad International",
+  //   stats: {
+  //     pages: "15+",
+  //     components: "30+",
+  //     animations: "20+",
+  //   },
+  // },
+  // {
+  //   title: "Business Management System",
+  //   subtitle: "All-in-One Business Operations",
+  //   icon: Briefcase,
+  //   description:
+  //     "A unified platform for managing business operations including project management, team collaboration, expense tracking, client management, and comprehensive reporting.",
+  //   image: "/business-management-dashboard-dark-modern.jpg",
+  //   technologies: ["React", "Node.js", "Express", "PostgreSQL", "Prisma", "Chart.js", "Tailwind CSS"],
+  //   features: [
+  //     "Project and task management with Kanban boards",
+  //     "Team collaboration and communication",
+  //     "Expense and invoice management",
+  //     "Client and vendor management",
+  //     "Business analytics and reporting",
+  //   ],
+  //   status: "In Development",
+  //   statusColor: "bg-amber-600",
+  //   company: "Trodad International",
+  //   stats: {
+  //     dashboards: "5+",
+  //     reports: "10+",
+  //     workflows: "8+",
+  //   },
+  // },
+  // {
+  //   title: "RAJSEBA",
+  //   subtitle: "Home Service Booking Platform",
+  //   icon: Layout,
+  //   description:
+  //     "A comprehensive service booking platform connecting customers with verified service providers for home services including cleaning, repairs, maintenance, and more.",
+  //   image: "/home-service-booking-platform-dark.jpg",
+  //   technologies: ["Next.js", "TypeScript", "Tailwind CSS", "API Integration", "Payment Gateway"],
+  //   features: [
+  //     "Service provider verification system",
+  //     "Real-time booking and scheduling",
+  //     "Integrated payment processing",
+  //     "Customer review and rating system",
+  //     "Admin dashboard for service management",
+  //   ],
+  //   status: "Live",
+  //   statusColor: "bg-emerald-600",liveUrl: "https://rajseba.com",
+  //   liveUrl: "https://rajseba.com",
+  //   company: "Ankabut Software",
+  //   stats: {
+  //     services: "100+",
+  //     providers: "500+",
+  //     bookings: "2000+",
+  //   },
+  // },
   {
     title: "BoiZaar",
     subtitle: "Peer-to-Peer Book Marketplace",
@@ -168,7 +170,7 @@ const projects = [
 export function ProjectsSection() {
   return (
     <section id="projects" className="py-20 bg-slate-900 text-white">
-      <div className="max-w-7xl mx-auto px-4">
+      <div className="container mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -184,7 +186,7 @@ export function ProjectsSection() {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-3 gap-8">
           {projects.map((project, index) => (
             <motion.div
               key={project.title}

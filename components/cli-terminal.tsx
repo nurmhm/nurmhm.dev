@@ -792,7 +792,7 @@ Diploma in Computer Technology at Jessore Polytechnic Institute (2019 – 2024)
     contact: {
       typed: `📞 CONTACT INFORMATION
 Direct Contact:
-Email: nurmd7228@gmail.com
+Email: nurmhm.dev@gmail.com
 Phone: +8801770514004
 Location: Dhaka, Bangladesh
 
@@ -816,7 +816,7 @@ Response time: Email (Within 24 hours), LinkedIn (Within 12 hours), Phone (Busin
                   <span className="text-green-400">📧</span>
                   <div>
                     <div className="text-white font-semibold">Email</div>
-                    <div className="text-green-200 text-sm">nurmd7228@gmail.com</div>
+                    <div className="text-green-200 text-sm">nurmhm.dev@gmail.com</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 p-2 bg-green-800/20 rounded">

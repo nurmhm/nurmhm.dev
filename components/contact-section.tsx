@@ -18,8 +18,8 @@ export function ContactSection() {
     {
       icon: Mail,
       label: "Email",
-      value: "nurmd7228@gmail.com",
-      href: "mailto:nurmd7228@gmail.com",
+      value: "nurmhm.dev@gmail.com",
+      href: "mailto:nurmhm.dev@gmail.com",
       color: "text-blue-400",
     },
     {
