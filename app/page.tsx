@@ -25,8 +25,8 @@ export default function Home() {
 
   return (
     <main className="relative">
-      <MatrixBackground />
-      <CodeRain />
+      {/* <MatrixBackground /> */}
+     {/* <CodeRain /> */}
       <Navigation onToggleCLI={toggleCLI} />
       <HeroSection onToggleCLI={toggleCLI} />
       <AboutSection />
