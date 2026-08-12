@@ -1048,7 +1048,8 @@ Professional Network: Growing`,
     if (commandHandler) {
       outputContent = typeof commandHandler === "function" ? commandHandler(cmd) : commandHandler
     } else {
-      outputContent = commands.error(cmd)
+      const errorHandler = commands.error
+      outputContent = typeof errorHandler === "function" ? errorHandler(cmd) : errorHandler
       // playSound("error") // Play error sound for unknown commands
     }
 

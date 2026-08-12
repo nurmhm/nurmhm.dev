@@ -5,8 +5,9 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
     "start": "next start",
+    "seed": "tsx lib/seed.ts",
     "seed:admin": "tsx lib/seed-admin.ts"
   },
   "dependencies": {
