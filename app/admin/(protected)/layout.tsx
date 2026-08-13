@@ -1,11 +1,12 @@
 import Link from "next/link"
-import { ExternalLink, LayoutDashboard, LogOut, UserRound } from "lucide-react"
+import { ExternalLink, LayoutDashboard, LogOut, UserRound, Wrench } from "lucide-react"
 import { requireAdmin } from "@/lib/auth/guards"
 import { logoutAdmin } from "@/lib/actions/auth"
 
 const navigation = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
   { href: "/admin/personal-information", label: "Personal information", icon: UserRound },
+  { href: "/admin/skills", label: "Skills", icon: Wrench },
 ]
 
 export default async function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) {

@@ -28,7 +28,7 @@ export function PortfolioContent({ profile, currentYear }: PortfolioContentProps
       <Navigation onToggleCLI={() => setIsCLIOpen((isOpen) => !isOpen)} profile={profile} />
       <HeroSection onToggleCLI={() => setIsCLIOpen((isOpen) => !isOpen)} profile={profile} />
       <AboutSection profile={profile} />
-      <SkillsSection />
+      <SkillsSection profile={profile} />
       <ExperienceSection />
       <ProjectsSection />
       <TestimonialsSection />

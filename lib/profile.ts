@@ -28,6 +28,18 @@ export const defaultPortfolioProfile = {
   portraitUrl: "/professional-developer-portrait.png",
   technologies: ["Next.js", "Node.js", "Prisma", "PostgreSQL", "TypeScript", "React"],
   traits: ["Web", "Problem Solver", "Team Player", "Fast Learner", "Detail Oriented"],
+  skillsHeading: "Technical Skills",
+  skillsDescription: "Web technologies I use to build enterprise applications",
+  skillCategories: [
+    { title: "Frontend Technologies", skills: ["React.js", "Next.js", "TypeScript", "JavaScript", "HTML5", "CSS3", "Tailwind CSS", "Vite"] },
+    { title: "Backend & APIs", skills: ["Node.js", "Express.js", "Django REST Framework", "REST APIs", "GraphQL", "tRPC"] },
+    { title: "Database & ORM", skills: ["PostgreSQL", "Prisma", "MongoDB", "MySQL", "Firebase", "Supabase", "Redis"] },
+    { title: "State & Data Fetching", skills: ["TanStack Query", "TanStack Table", "Redux", "Zustand", "React Hook Form", "Zod", "SWR"] },
+    { title: "DevOps & Tools", skills: ["Git", "GitHub", "Docker", "Vercel", "Netlify", "CI/CD", "Linux"] },
+    { title: "Design & UI/UX", skills: ["Figma", "Responsive Design", "Accessibility", "Design Systems", "Framer Motion"] },
+  ],
+  softSkills: ["Problem Solving", "Team Collaboration", "Communication", "Fast Learning", "Adaptability", "Time Management"],
+  languages: [{ name: "Bengali", level: "Native" }, { name: "English", level: "Professional" }],
 }
 
 export type PortfolioProfileData = typeof defaultPortfolioProfile & {
@@ -67,6 +79,11 @@ export async function getPortfolioProfile(): Promise<PortfolioProfileData> {
     portraitUrl: profile.portraitUrl,
     technologies: profile.technologies,
     traits: profile.traits,
+    skillsHeading: profile.skillsHeading ?? defaultPortfolioProfile.skillsHeading,
+    skillsDescription: profile.skillsDescription ?? defaultPortfolioProfile.skillsDescription,
+    skillCategories: profile.skillCategories?.length ? profile.skillCategories : defaultPortfolioProfile.skillCategories,
+    softSkills: profile.softSkills?.length ? profile.softSkills : defaultPortfolioProfile.softSkills,
+    languages: profile.languages?.length ? profile.languages : defaultPortfolioProfile.languages,
     updatedAt: profile.updatedAt,
     isPersisted: true,
   }

@@ -5,6 +5,7 @@ import { redirect } from "next/navigation"
 import { z } from "zod"
 import { requireAdmin } from "@/lib/auth/guards"
 import { connectToDatabase } from "@/lib/db"
+import { defaultPortfolioProfile } from "@/lib/profile"
 import { PortfolioProfile } from "@/model/profile"
 
 const requiredText = z.string().trim().min(1).max(2000)
@@ -34,6 +35,20 @@ const profileSchema = z.object({
   portraitUrl: urlOrPublicPath,
   technologies: z.array(requiredText.max(60)).min(1).max(30),
   traits: z.array(requiredText.max(60)).min(1).max(20),
+})
+
+const skillsSchema = z.object({
+  skillsHeading: requiredText.max(100),
+  skillsDescription: requiredText.max(240),
+  skillCategories: z.array(z.object({
+    title: requiredText.max(100),
+    skills: z.array(requiredText.max(60)).min(1).max(30),
+  })).length(6),
+  softSkills: z.array(requiredText.max(60)).min(1).max(20),
+  languages: z.array(z.object({
+    name: requiredText.max(60),
+    level: requiredText.max(60),
+  })).min(1).max(10),
 })
 
 function splitLines(value: FormDataEntryValue | null) {
@@ -81,7 +96,17 @@ export async function updatePortfolioProfile(formData: FormData) {
   await connectToDatabase()
   await PortfolioProfile.findOneAndUpdate(
     { singletonKey: "primary" },
-    { ...parsed.data, singletonKey: "primary" },
+    {
+      $set: parsed.data,
+      $setOnInsert: {
+        singletonKey: "primary",
+        skillsHeading: defaultPortfolioProfile.skillsHeading,
+        skillsDescription: defaultPortfolioProfile.skillsDescription,
+        skillCategories: defaultPortfolioProfile.skillCategories,
+        softSkills: defaultPortfolioProfile.softSkills,
+        languages: defaultPortfolioProfile.languages,
+      },
+    },
     { upsert: true, new: true, runValidators: true, setDefaultsOnInsert: true },
   )
 
@@ -89,4 +114,45 @@ export async function updatePortfolioProfile(formData: FormData) {
   revalidatePath("/admin")
   revalidatePath("/admin/personal-information")
   redirect("/admin/personal-information?saved=1")
+}
+
+export async function updatePortfolioSkills(formData: FormData) {
+  await requireAdmin()
+
+  const skillCategories = Array.from({ length: 6 }, (_, index) => ({
+    title: String(formData.get(`categoryTitle${index}`) ?? ""),
+    skills: splitLines(formData.get(`categorySkills${index}`)),
+  }))
+  const languages = splitLines(formData.get("languages")).map((line) => {
+    const [name, ...levelParts] = line.split("|")
+    return { name: name.trim(), level: levelParts.join("|").trim() }
+  })
+  const parsed = skillsSchema.safeParse({
+    skillsHeading: formData.get("skillsHeading"),
+    skillsDescription: formData.get("skillsDescription"),
+    skillCategories,
+    softSkills: splitCommaSeparated(formData.get("softSkills")),
+    languages,
+  })
+
+  if (!parsed.success) redirect("/admin/skills?error=invalid")
+
+  await connectToDatabase()
+  const {
+    skillsHeading: _skillsHeading,
+    skillsDescription: _skillsDescription,
+    skillCategories: _skillCategories,
+    softSkills: _softSkills,
+    languages: _languages,
+    ...personalDefaults
+  } = defaultPortfolioProfile
+  await PortfolioProfile.findOneAndUpdate(
+    { singletonKey: "primary" },
+    { $set: parsed.data, $setOnInsert: personalDefaults },
+    { upsert: true, new: true, runValidators: true, setDefaultsOnInsert: true },
+  )
+  revalidatePath("/")
+  revalidatePath("/admin")
+  revalidatePath("/admin/skills")
+  redirect("/admin/skills?saved=1")
 }

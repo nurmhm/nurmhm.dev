@@ -22,6 +22,11 @@ export interface PortfolioProfileDocument extends mongoose.Document {
   portraitUrl: string
   technologies: string[]
   traits: string[]
+  skillsHeading: string
+  skillsDescription: string
+  skillCategories: { title: string; skills: string[] }[]
+  softSkills: string[]
+  languages: { name: string; level: string }[]
   createdAt: Date
   updatedAt: Date
 }
@@ -49,6 +54,17 @@ const PortfolioProfileSchema = new mongoose.Schema<PortfolioProfileDocument>(
     portraitUrl: { type: String, required: true, trim: true },
     technologies: { type: [String], required: true },
     traits: { type: [String], required: true },
+    skillsHeading: { type: String, required: true, trim: true },
+    skillsDescription: { type: String, required: true, trim: true },
+    skillCategories: {
+      type: [{ title: { type: String, required: true, trim: true }, skills: { type: [String], required: true } }],
+      required: true,
+    },
+    softSkills: { type: [String], required: true },
+    languages: {
+      type: [{ name: { type: String, required: true, trim: true }, level: { type: String, required: true, trim: true } }],
+      required: true,
+    },
   },
   { timestamps: true },
 )
