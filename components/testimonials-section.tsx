@@ -3,38 +3,9 @@
 import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Quote, Star } from "lucide-react"
+import type { PublicPortfolioProfile } from "@/lib/profile"
 
-const testimonials = [
-  {
-    quote:
-      "Nur delivered exceptional work on our E-commerce ERP system. His expertise in Next.js and Prisma helped us build a robust, scalable platform. Highly professional and communicative throughout the project.",
-    name: "MD. Ruhul Amin",
-    title: "Senior Developer",
-    company: "Trodad International",
-    avatar: "/professional-man-portrait.png",
-    rating: 5,
-  },
-  {
-    quote:
-      "Working with Nur on the RAJSEBA platform was a fantastic experience. He consistently delivered high-quality, pixel-perfect UIs and always went the extra mile to ensure optimal performance.",
-    name: "Nazmul Hossain",
-    title: "CEO",
-    company: "Ankabut Software",
-    avatar: "/professional-young-man.png",
-    rating: 5,
-  },
-  {
-    quote:
-      "Nur's expertise in React and Web development is evident in every project he touches. His attention to detail and ability to solve complex problems makes him invaluable to any development team.",
-  name: "MD. Rafi",
-    title: "Senior Developer",
-    company: "Trodad International",
-    avatar: "/professional-woman-portrait.png",
-    rating: 5,
-  },
-]
-
-export function TestimonialsSection() {
+export function TestimonialsSection({ profile }: { profile: PublicPortfolioProfile }) {
   return (
     <section id="testimonials" className="py-20 bg-slate-950 text-white">
       <div className="max-w-6xl mx-auto px-4">
@@ -46,15 +17,15 @@ export function TestimonialsSection() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-pink-400 to-rose-400 bg-clip-text text-transparent">
-            What Colleagues Say
+            {profile.testimonialsHeading}
           </h2>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto">Feedback from professionals I've collaborated with</p>
+          <p className="text-xl text-slate-300 max-w-3xl mx-auto">{profile.testimonialsDescription}</p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
+          {profile.testimonials.map((testimonial, index) => (
             <motion.div
-              key={index}
+              key={`${testimonial.name}-${index}`}
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.1 }}

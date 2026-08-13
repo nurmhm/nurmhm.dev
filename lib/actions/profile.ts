@@ -90,6 +90,49 @@ const projectsSchema = z.object({
   })).min(1).max(12),
 })
 
+const testimonialsSchema = z.object({
+  testimonialsHeading: requiredText.max(100),
+  testimonialsDescription: requiredText.max(240),
+  testimonials: z.array(z.object({
+    quote: requiredText.max(1200),
+    name: requiredText.max(100),
+    title: requiredText.max(120),
+    company: requiredText.max(120),
+    avatar: urlOrPublicPath,
+    rating: z.number().int().min(1).max(5),
+  })).min(1).max(12),
+})
+
+const blogSchema = z.object({
+  blogHeading: requiredText.max(100),
+  blogDescription: requiredText.max(240),
+  blogPosts: z.array(z.object({
+    title: requiredText.max(240),
+    date: requiredText.max(80),
+    readTime: requiredText.max(40),
+    excerpt: requiredText.max(1200),
+    image: urlOrPublicPath,
+    tags: z.array(requiredText.max(60)).min(1).max(12),
+    link: z.string().trim().url(),
+  })).min(1).max(12),
+})
+
+const educationSchema = z.object({
+  educationHeading: requiredText.max(100),
+  educationDescription: requiredText.max(240),
+  education: z.array(z.object({
+    degree: requiredText.max(200),
+    institution: requiredText.max(160),
+    location: requiredText.max(120),
+    period: requiredText.max(100),
+    status: requiredText.max(60),
+    cgpa: z.string().trim().max(80),
+    description: requiredText.max(1200),
+    subjects: z.array(requiredText.max(160)).min(1).max(20),
+    achievements: z.array(requiredText.max(300)).min(1).max(20),
+  })).min(1).max(10),
+})
+
 function splitLines(value: FormDataEntryValue | null) {
   return String(value ?? "")
     .split("\n")
@@ -150,6 +193,15 @@ export async function updatePortfolioProfile(formData: FormData) {
         projectsHeading: defaultPortfolioProfile.projectsHeading,
         projectsDescription: defaultPortfolioProfile.projectsDescription,
         projects: defaultPortfolioProfile.projects,
+        testimonialsHeading: defaultPortfolioProfile.testimonialsHeading,
+        testimonialsDescription: defaultPortfolioProfile.testimonialsDescription,
+        testimonials: defaultPortfolioProfile.testimonials,
+        blogHeading: defaultPortfolioProfile.blogHeading,
+        blogDescription: defaultPortfolioProfile.blogDescription,
+        blogPosts: defaultPortfolioProfile.blogPosts,
+        educationHeading: defaultPortfolioProfile.educationHeading,
+        educationDescription: defaultPortfolioProfile.educationDescription,
+        education: defaultPortfolioProfile.education,
       },
     },
     { upsert: true, new: true, runValidators: true, setDefaultsOnInsert: true },
@@ -224,9 +276,15 @@ export async function updatePortfolioExperience(formData: FormData) {
 
   if (!parsed.success) redirect("/admin/experience?error=invalid")
   await connectToDatabase()
+  const {
+    experienceHeading: _experienceHeading,
+    experienceDescription: _experienceDescription,
+    experiences: _experiences,
+    ...experienceDefaults
+  } = defaultPortfolioProfile
   await PortfolioProfile.findOneAndUpdate(
     { singletonKey: "primary" },
-    { $set: parsed.data, $setOnInsert: defaultPortfolioProfile },
+    { $set: parsed.data, $setOnInsert: experienceDefaults },
     { upsert: true, new: true, runValidators: true, setDefaultsOnInsert: true },
   )
   revalidatePath("/")
@@ -258,12 +316,99 @@ export async function updatePortfolioProjects(formData: FormData) {
 
   if (!parsed.success) redirect("/admin/projects?error=invalid")
   await connectToDatabase()
+  const {
+    projectsHeading: _projectsHeading,
+    projectsDescription: _projectsDescription,
+    projects: _projects,
+    ...projectDefaults
+  } = defaultPortfolioProfile
   await PortfolioProfile.findOneAndUpdate(
     { singletonKey: "primary" },
-    { $set: parsed.data, $setOnInsert: defaultPortfolioProfile },
+    { $set: parsed.data, $setOnInsert: projectDefaults },
     { upsert: true, new: true, runValidators: true, setDefaultsOnInsert: true },
   )
   revalidatePath("/")
   revalidatePath("/admin/projects")
   redirect("/admin/projects?saved=1")
+}
+
+export async function updatePortfolioTestimonials(formData: FormData) {
+  await requireAdmin()
+  const count = Math.min(Number(formData.get("testimonialCount")) || 0, 12)
+  const testimonials = Array.from({ length: count }, (_, index) => ({
+    quote: formData.get(`testimonialQuote${index}`),
+    name: formData.get(`testimonialName${index}`),
+    title: formData.get(`testimonialTitle${index}`),
+    company: formData.get(`testimonialCompany${index}`),
+    avatar: formData.get(`testimonialAvatar${index}`),
+    rating: Number(formData.get(`testimonialRating${index}`)),
+  }))
+  const parsed = testimonialsSchema.safeParse({
+    testimonialsHeading: formData.get("testimonialsHeading"),
+    testimonialsDescription: formData.get("testimonialsSectionDescription"),
+    testimonials,
+  })
+  if (!parsed.success) redirect("/admin/testimonials?error=invalid")
+  await updateSection(parsed.data)
+  revalidatePath("/admin/testimonials")
+  redirect("/admin/testimonials?saved=1")
+}
+
+export async function updatePortfolioBlog(formData: FormData) {
+  await requireAdmin()
+  const count = Math.min(Number(formData.get("blogCount")) || 0, 12)
+  const blogPosts = Array.from({ length: count }, (_, index) => ({
+    title: formData.get(`blogTitle${index}`),
+    date: formData.get(`blogDate${index}`),
+    readTime: formData.get(`blogReadTime${index}`),
+    excerpt: formData.get(`blogExcerpt${index}`),
+    image: formData.get(`blogImage${index}`),
+    tags: splitCommaSeparated(formData.get(`blogTags${index}`)),
+    link: formData.get(`blogLink${index}`),
+  }))
+  const parsed = blogSchema.safeParse({
+    blogHeading: formData.get("blogHeading"),
+    blogDescription: formData.get("blogSectionDescription"),
+    blogPosts,
+  })
+  if (!parsed.success) redirect("/admin/blog?error=invalid")
+  await updateSection(parsed.data)
+  revalidatePath("/admin/blog")
+  redirect("/admin/blog?saved=1")
+}
+
+export async function updatePortfolioEducation(formData: FormData) {
+  await requireAdmin()
+  const count = Math.min(Number(formData.get("educationCount")) || 0, 10)
+  const education = Array.from({ length: count }, (_, index) => ({
+    degree: formData.get(`educationDegree${index}`),
+    institution: formData.get(`educationInstitution${index}`),
+    location: formData.get(`educationLocation${index}`),
+    period: formData.get(`educationPeriod${index}`),
+    status: formData.get(`educationStatus${index}`),
+    cgpa: formData.get(`educationCgpa${index}`),
+    description: formData.get(`educationDescription${index}`),
+    subjects: splitLines(formData.get(`educationSubjects${index}`)),
+    achievements: splitLines(formData.get(`educationAchievements${index}`)),
+  }))
+  const parsed = educationSchema.safeParse({
+    educationHeading: formData.get("educationHeading"),
+    educationDescription: formData.get("educationSectionDescription"),
+    education,
+  })
+  if (!parsed.success) redirect("/admin/education?error=invalid")
+  await updateSection(parsed.data)
+  revalidatePath("/admin/education")
+  redirect("/admin/education?saved=1")
+}
+
+async function updateSection(data: Record<string, unknown>) {
+  await connectToDatabase()
+  await PortfolioProfile.findOneAndUpdate(
+    { singletonKey: "primary" },
+    { $set: data, $setOnInsert: defaultPortfolioProfile },
+    { upsert: true, new: true, runValidators: true, setDefaultsOnInsert: true },
+  )
+  revalidatePath("/")
+  revalidatePath("/admin")
 }

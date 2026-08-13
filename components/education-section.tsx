@@ -4,57 +4,9 @@ import { motion } from "framer-motion"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { GraduationCap, Calendar, MapPin, Award, BookOpen } from "lucide-react"
+import type { PublicPortfolioProfile } from "@/lib/profile"
 
-const education = [
-  {
-    degree: "Bachelor of Science in Computer Science & Engineering",
-    institution: "Uttara University",
-    location: "Dhaka, Bangladesh",
-    period: "2024 – Present",
-    status: "In Progress",
-    description:
-      "Currently pursuing advanced computer science concepts with focus on software engineering, algorithms, and modern web technologies.",
-    subjects: [
-      "Data Structures & Algorithms",
-      "Software Engineering",
-      "Database Management Systems",
-      "Computer Networks",
-      "Web Technologies",
-      "Object-Oriented Programming",
-    ],
-    achievements: [
-      "Active participation in coding competitions",
-      "Member of university programming club",
-      "Contributing to open-source projects",
-    ],
-  },
-  {
-    degree: "Diploma in Computer Technology",
-    institution: "Jessore Polytechnic Institute",
-    location: "Jessore, Bangladesh",
-    period: "2019 – 2024",
-    status: "Completed",
-    cgpa: "3.66 out of 4.00",
-    description:
-      "Comprehensive study of computer systems, programming fundamentals, and practical application development.",
-    subjects: [
-      "Programming Fundamentals",
-      "Computer Systems Architecture",
-      "Database Design",
-      "Web Development",
-      "Software Testing",
-      "Project Management",
-    ],
-    achievements: [
-      "Graduated with distinction (CGPA: 3.66/4.00)",
-      "Led multiple group projects successfully",
-      "Received excellence award in web development",
-      "Completed internship with outstanding performance",
-    ],
-  },
-]
-
-export function EducationSection() {
+export function EducationSection({ profile }: { profile: PublicPortfolioProfile }) {
   return (
     <section id="education" className="py-20 bg-slate-950 text-white">
       <div className="max-w-6xl mx-auto px-4">
@@ -66,17 +18,17 @@ export function EducationSection() {
           className="text-center mb-16"
         >
           <h2 className="text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">
-            Education
+            {profile.educationHeading}
           </h2>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-            My academic journey in computer science and technology
+            {profile.educationDescription}
           </p>
         </motion.div>
 
         <div className="space-y-8">
-          {education.map((edu, index) => (
+          {profile.education.map((edu, index) => (
             <motion.div
-              key={index}
+              key={`${edu.institution}-${index}`}
               initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: index * 0.2 }}

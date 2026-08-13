@@ -119,6 +119,26 @@ export const defaultPortfolioProfile = {
       githubUrl: "https://github.com/nurmhm/boizaar",
     },
   ],
+  testimonialsHeading: "What Colleagues Say",
+  testimonialsDescription: "Feedback from professionals I've collaborated with",
+  testimonials: [
+    { quote: "Nur delivered exceptional work on our E-commerce ERP system. His expertise in Next.js and Prisma helped us build a robust, scalable platform. Highly professional and communicative throughout the project.", name: "MD. Ruhul Amin", title: "Senior Developer", company: "Trodad International", avatar: "/professional-man-portrait.png", rating: 5 },
+    { quote: "Working with Nur on the RAJSEBA platform was a fantastic experience. He consistently delivered high-quality, pixel-perfect UIs and always went the extra mile to ensure optimal performance.", name: "Nazmul Hossain", title: "CEO", company: "Ankabut Software", avatar: "/professional-young-man.png", rating: 5 },
+    { quote: "Nur's expertise in React and web development is evident in every project he touches. His attention to detail and ability to solve complex problems makes him invaluable to any development team.", name: "MD. Rafi", title: "Senior Developer", company: "Trodad International", avatar: "/professional-woman-portrait.png", rating: 5 },
+  ],
+  blogHeading: "Latest Articles",
+  blogDescription: "Insights and tutorials on web development",
+  blogPosts: [
+    { title: "Goodbye Boilerplate: Why Zustand is the State Management You've Been Waiting For", date: "Dec 28, 2025", readTime: "2 min read", excerpt: "Learn how Zustand offers a compact and practical state management model for modern React applications.", image: "/database-schema-prisma-postgresql-dark-theme.jpg", tags: ["React", "State Management", "Zustand", "JavaScript"], link: "https://medium.com/@nurmhm/goodbye-boilerplate-why-zustand-is-the-state-management-youve-been-waiting-for-29bfdbd267d2" },
+    { title: "Axios Explained: A Beginner-Friendly Guide to HTTP Requests in JavaScript", date: "Sep 25, 2025", readTime: "5 min read", excerpt: "A practical introduction to making and handling HTTP requests with Axios in browser and Node.js applications.", image: "/authentication-security-login-dark-theme.jpg", tags: ["Web Development", "Data Fetching", "Axios", "JavaScript"], link: "https://medium.com/@nurmhm/axios-explained-a-beginner-friendly-guide-to-http-requests-in-javascript-a281825d0fd7" },
+    { title: "Unsupported color function oklch error in html2canvas within a Next.js project", date: "Jul 16, 2025", readTime: "3 min read", excerpt: "How to resolve html2canvas color parsing failures when generating PDFs from a modern Tailwind CSS interface.", image: "/erp-system-dashboard-enterprise-dark-theme.jpg", tags: ["jsPDF", "html2canvas", "Next.js", "Tailwind CSS"], link: "https://medium.com/@nurmhm/unsupported-color-function-oklch-error-in-html2canvas-within-a-next-js-project-0d69037b8e85" },
+  ],
+  educationHeading: "Education",
+  educationDescription: "My academic journey in computer science and technology",
+  education: [
+    { degree: "Bachelor of Science in Computer Science & Engineering", institution: "Uttara University", location: "Dhaka, Bangladesh", period: "2024 - Present", status: "In Progress", cgpa: "", description: "Currently pursuing advanced computer science concepts with a focus on software engineering, algorithms, and modern web technologies.", subjects: ["Data Structures & Algorithms", "Software Engineering", "Database Management Systems", "Computer Networks", "Web Technologies", "Object-Oriented Programming"], achievements: ["Active participation in coding competitions", "Member of university programming club", "Contributing to open-source projects"] },
+    { degree: "Diploma in Computer Technology", institution: "Jessore Polytechnic Institute", location: "Jessore, Bangladesh", period: "2019 - 2024", status: "Completed", cgpa: "3.66 out of 4.00", description: "Comprehensive study of computer systems, programming fundamentals, and practical application development.", subjects: ["Programming Fundamentals", "Computer Systems Architecture", "Database Design", "Web Development", "Software Testing", "Project Management"], achievements: ["Graduated with distinction (CGPA: 3.66/4.00)", "Led multiple group projects successfully", "Received excellence award in web development", "Completed internship with outstanding performance"] },
+  ],
 }
 
 export type PortfolioProfileData = typeof defaultPortfolioProfile & {
@@ -169,6 +189,15 @@ export async function getPortfolioProfile(): Promise<PortfolioProfileData> {
     projectsHeading: profile.projectsHeading ?? defaultPortfolioProfile.projectsHeading,
     projectsDescription: profile.projectsDescription ?? defaultPortfolioProfile.projectsDescription,
     projects: profile.projects?.length ? profile.projects : defaultPortfolioProfile.projects,
+    testimonialsHeading: profile.testimonialsHeading ?? defaultPortfolioProfile.testimonialsHeading,
+    testimonialsDescription: profile.testimonialsDescription ?? defaultPortfolioProfile.testimonialsDescription,
+    testimonials: profile.testimonials?.length ? profile.testimonials : defaultPortfolioProfile.testimonials,
+    blogHeading: profile.blogHeading ?? defaultPortfolioProfile.blogHeading,
+    blogDescription: profile.blogDescription ?? defaultPortfolioProfile.blogDescription,
+    blogPosts: profile.blogPosts?.length ? profile.blogPosts : defaultPortfolioProfile.blogPosts,
+    educationHeading: profile.educationHeading ?? defaultPortfolioProfile.educationHeading,
+    educationDescription: profile.educationDescription ?? defaultPortfolioProfile.educationDescription,
+    education: profile.education?.length ? profile.education : defaultPortfolioProfile.education,
     updatedAt: profile.updatedAt,
     isPersisted: true,
   }

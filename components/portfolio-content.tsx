@@ -31,9 +31,9 @@ export function PortfolioContent({ profile, currentYear }: PortfolioContentProps
       <SkillsSection profile={profile} />
       <ExperienceSection profile={profile} />
       <ProjectsSection profile={profile} />
-      <TestimonialsSection />
-      <BlogSection />
-      <EducationSection />
+      <TestimonialsSection profile={profile} />
+      <BlogSection profile={profile} />
+      <EducationSection profile={profile} />
       <ContactSection profile={profile} />
       <Footer profile={profile} currentYear={currentYear} />
       <CLITerminal isOpen={isCLIOpen} onClose={() => setIsCLIOpen(false)} />

@@ -55,6 +55,40 @@ export interface PortfolioProfileDocument extends mongoose.Document {
     liveUrl: string
     githubUrl: string
   }[]
+  testimonialsHeading: string
+  testimonialsDescription: string
+  testimonials: {
+    quote: string
+    name: string
+    title: string
+    company: string
+    avatar: string
+    rating: number
+  }[]
+  blogHeading: string
+  blogDescription: string
+  blogPosts: {
+    title: string
+    date: string
+    readTime: string
+    excerpt: string
+    image: string
+    tags: string[]
+    link: string
+  }[]
+  educationHeading: string
+  educationDescription: string
+  education: {
+    degree: string
+    institution: string
+    location: string
+    period: string
+    status: string
+    cgpa: string
+    description: string
+    subjects: string[]
+    achievements: string[]
+  }[]
   createdAt: Date
   updatedAt: Date
 }
@@ -124,6 +158,49 @@ const PortfolioProfileSchema = new mongoose.Schema<PortfolioProfileDocument>(
         company: { type: String, default: "", trim: true },
         liveUrl: { type: String, default: "", trim: true },
         githubUrl: { type: String, default: "", trim: true },
+      }],
+      required: true,
+    },
+    testimonialsHeading: { type: String, required: true, trim: true },
+    testimonialsDescription: { type: String, required: true, trim: true },
+    testimonials: {
+      type: [{
+        quote: { type: String, required: true, trim: true },
+        name: { type: String, required: true, trim: true },
+        title: { type: String, required: true, trim: true },
+        company: { type: String, required: true, trim: true },
+        avatar: { type: String, required: true, trim: true },
+        rating: { type: Number, required: true, min: 1, max: 5 },
+      }],
+      required: true,
+    },
+    blogHeading: { type: String, required: true, trim: true },
+    blogDescription: { type: String, required: true, trim: true },
+    blogPosts: {
+      type: [{
+        title: { type: String, required: true, trim: true },
+        date: { type: String, required: true, trim: true },
+        readTime: { type: String, required: true, trim: true },
+        excerpt: { type: String, required: true, trim: true },
+        image: { type: String, required: true, trim: true },
+        tags: { type: [String], required: true },
+        link: { type: String, required: true, trim: true },
+      }],
+      required: true,
+    },
+    educationHeading: { type: String, required: true, trim: true },
+    educationDescription: { type: String, required: true, trim: true },
+    education: {
+      type: [{
+        degree: { type: String, required: true, trim: true },
+        institution: { type: String, required: true, trim: true },
+        location: { type: String, required: true, trim: true },
+        period: { type: String, required: true, trim: true },
+        status: { type: String, required: true, trim: true },
+        cgpa: { type: String, default: "", trim: true },
+        description: { type: String, required: true, trim: true },
+        subjects: { type: [String], required: true },
+        achievements: { type: [String], required: true },
       }],
       required: true,
     },
