@@ -1,0 +1,58 @@
+import mongoose, { type Model } from "mongoose"
+
+export interface PortfolioProfileDocument extends mongoose.Document {
+  singletonKey: "primary"
+  fullName: string
+  professionalTitle: string
+  tagline: string
+  shortBio: string
+  aboutParagraphs: string[]
+  currentCompany: string
+  yearsExperience: string
+  email: string
+  phone: string
+  location: string
+  responseTime: string
+  availableForFreelance: boolean
+  openToFullTime: boolean
+  githubUrl: string
+  linkedinUrl: string
+  mediumUrl: string
+  resumeUrl: string
+  portraitUrl: string
+  technologies: string[]
+  traits: string[]
+  createdAt: Date
+  updatedAt: Date
+}
+
+const PortfolioProfileSchema = new mongoose.Schema<PortfolioProfileDocument>(
+  {
+    singletonKey: { type: String, required: true, unique: true, default: "primary", immutable: true },
+    fullName: { type: String, required: true, trim: true },
+    professionalTitle: { type: String, required: true, trim: true },
+    tagline: { type: String, required: true, trim: true },
+    shortBio: { type: String, required: true, trim: true },
+    aboutParagraphs: { type: [String], required: true },
+    currentCompany: { type: String, required: true, trim: true },
+    yearsExperience: { type: String, required: true, trim: true },
+    email: { type: String, required: true, lowercase: true, trim: true },
+    phone: { type: String, required: true, trim: true },
+    location: { type: String, required: true, trim: true },
+    responseTime: { type: String, required: true, trim: true },
+    availableForFreelance: { type: Boolean, required: true, default: true },
+    openToFullTime: { type: Boolean, required: true, default: true },
+    githubUrl: { type: String, required: true, trim: true },
+    linkedinUrl: { type: String, required: true, trim: true },
+    mediumUrl: { type: String, required: true, trim: true },
+    resumeUrl: { type: String, required: true, trim: true },
+    portraitUrl: { type: String, required: true, trim: true },
+    technologies: { type: [String], required: true },
+    traits: { type: [String], required: true },
+  },
+  { timestamps: true },
+)
+
+export const PortfolioProfile: Model<PortfolioProfileDocument> =
+  (mongoose.models.PortfolioProfile as Model<PortfolioProfileDocument> | undefined) ??
+  mongoose.model<PortfolioProfileDocument>("PortfolioProfile", PortfolioProfileSchema)
