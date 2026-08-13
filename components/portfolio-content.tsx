@@ -29,8 +29,8 @@ export function PortfolioContent({ profile, currentYear }: PortfolioContentProps
       <HeroSection onToggleCLI={() => setIsCLIOpen((isOpen) => !isOpen)} profile={profile} />
       <AboutSection profile={profile} />
       <SkillsSection profile={profile} />
-      <ExperienceSection />
-      <ProjectsSection />
+      <ExperienceSection profile={profile} />
+      <ProjectsSection profile={profile} />
       <TestimonialsSection />
       <BlogSection />
       <EducationSection />
