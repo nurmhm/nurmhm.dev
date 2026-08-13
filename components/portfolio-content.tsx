@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { AboutSection } from "@/components/about-section"
 import { BlogSection } from "@/components/blog-section"
-import { CLITerminal } from "@/components/cli-terminal"
+import { CLITerminal } from "@/components/portfolio-cli"
 import { ContactSection } from "@/components/contact-section"
 import { EducationSection } from "@/components/education-section"
 import { ExperienceSection } from "@/components/experience-section"
@@ -36,7 +36,7 @@ export function PortfolioContent({ profile, currentYear }: PortfolioContentProps
       <EducationSection profile={profile} />
       <ContactSection profile={profile} />
       <Footer profile={profile} currentYear={currentYear} />
-      <CLITerminal isOpen={isCLIOpen} onClose={() => setIsCLIOpen(false)} />
+      <CLITerminal isOpen={isCLIOpen} onClose={() => setIsCLIOpen(false)} profile={profile} />
     </main>
   )
 }
