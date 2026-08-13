@@ -2,8 +2,9 @@
 
 import { motion } from "framer-motion"
 import { Github, Linkedin, Mail, Heart } from "lucide-react"
+import type { PublicPortfolioProfile } from "@/lib/profile"
 
-export function Footer() {
+export function Footer({ profile, currentYear }: { profile: PublicPortfolioProfile; currentYear: number }) {
   return (
     <motion.footer
       initial={{ opacity: 0, y: 20 }}
@@ -17,11 +18,9 @@ export function Footer() {
           {/* Brand */}
           <div>
             <h3 className="text-xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent mb-3">
-              Nur Mohammad
+              {profile.fullName}
             </h3>
-            <p className="text-slate-400 text-sm">
-              Web Developer building enterprise-grade applications with Next.js, Node.js, Prisma, and PostgreSQL.
-            </p>
+            <p className="text-slate-400 text-sm">{profile.shortBio}</p>
           </div>
 
           {/* Quick Links */}
@@ -47,7 +46,7 @@ export function Footer() {
           <div>
             <h4 className="text-white font-semibold mb-3">Tech Stack</h4>
             <div className="flex flex-wrap gap-2 text-xs">
-              {["Next.js", "Node.js", "Prisma", "PostgreSQL", "TypeScript", "React"].map((tech) => (
+              {profile.technologies.map((tech) => (
                 <span key={tech} className="px-2 py-1 bg-slate-800 rounded text-slate-300">
                   {tech}
                 </span>
@@ -60,10 +59,12 @@ export function Footer() {
           <p className="flex items-center justify-center gap-1 mb-2">
             Built with <Heart className="w-4 h-4 text-red-500" /> using Next.js, React & Tailwind CSS
           </p>
-          <p className="text-slate-500 mb-4">&copy; {new Date().getFullYear()} Nur Mohammad. All rights reserved.</p>
+          <p className="text-slate-500 mb-4">
+            &copy; {currentYear} {profile.fullName}. All rights reserved.
+          </p>
           <div className="flex justify-center gap-6">
             <a
-              href="https://github.com/nurmhm"
+              href={profile.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-emerald-400 transition-colors"
@@ -72,7 +73,7 @@ export function Footer() {
               <Github className="w-5 h-5" />
             </a>
             <a
-              href="https://linkedin.com/in/nurmhm7228"
+              href={profile.linkedinUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-cyan-400 transition-colors"
@@ -80,7 +81,7 @@ export function Footer() {
             >
               <Linkedin className="w-5 h-5" />
             </a>
-            <a href="mailto:nurmhm.dev@gmail.com" className="hover:text-amber-400 transition-colors" title="Email">
+            <a href={`mailto:${profile.email}`} className="hover:text-amber-400 transition-colors" title="Email">
               <Mail className="w-5 h-5" />
             </a>
           </div>

@@ -6,12 +6,14 @@ import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Terminal, Menu, X } from "lucide-react"
+import type { PublicPortfolioProfile } from "@/lib/profile"
 
 interface NavigationProps {
   onToggleCLI: () => void
+  profile: PublicPortfolioProfile
 }
 
-export function Navigation({ onToggleCLI }: NavigationProps) {
+export function Navigation({ onToggleCLI, profile }: NavigationProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -60,7 +62,7 @@ export function Navigation({ onToggleCLI }: NavigationProps) {
             onClick={(e) => handleNavLinkClick(e, "#hero")}
             className="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent"
           >
-            Nur Mohammad
+            {profile.fullName}
           </a>
 
           {/* Desktop Navigation */}

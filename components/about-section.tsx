@@ -4,19 +4,20 @@ import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Code, Target, Server, Database } from "lucide-react"
+import type { PublicPortfolioProfile } from "@/lib/profile"
 
-export function AboutSection() {
+export function AboutSection({ profile }: { profile: PublicPortfolioProfile }) {
   const highlights = [
     {
       icon: Code,
-      title: "2+ Years Experience",
+      title: `${profile.yearsExperience} Experience`,
       description: "Building modern Web web applications",
       color: "text-emerald-400",
     },
     {
       icon: Server,
-      title: "Web Developer",
-      description: "Next.js, Node.js, Prisma, PostgreSQL specialist",
+      title: profile.professionalTitle,
+      description: profile.tagline,
       color: "text-cyan-400",
     },
     {
@@ -47,7 +48,7 @@ export function AboutSection() {
             About Me
           </h2>
           <p className="text-xl text-slate-300 max-w-3xl mx-auto">
-            Web Developer building enterprise-grade applications
+            {profile.shortBio}
           </p>
         </motion.div>
 
@@ -60,27 +61,16 @@ export function AboutSection() {
             className="space-y-6"
           >
             <div>
-              <h3 className="text-2xl font-bold text-emerald-400 mb-4">Hello, I'm Nur Mohammad</h3>
-              <p className="text-slate-200 leading-relaxed mb-4">
-                I'm a Web Developer specializing in building enterprise-grade applications with modern
-                technologies. Currently working at{" "}
-                <span className="text-emerald-400 font-semibold">Trodad International</span>, where I develop complex
-                systems including E-commerce ERP, Doctor Appointment Systems, Hospital Portfolio, and Business
-                Management platforms.
-              </p>
-              <p className="text-slate-200 leading-relaxed mb-4">
-                My tech stack includes Next.js, Node.js, Prisma ORM, and PostgreSQL for building scalable, type-safe
-                applications. I focus on clean architecture, efficient database design, and delivering high-quality user
-                experiences.
-              </p>
-              <p className="text-slate-200 leading-relaxed">
-                I believe in writing maintainable code, following best practices, and continuously learning to deliver
-                enterprise solutions that make a real impact.
-              </p>
+              <h3 className="text-2xl font-bold text-emerald-400 mb-4">Hello, I'm {profile.fullName}</h3>
+              {profile.aboutParagraphs.map((paragraph, index) => (
+                <p key={`${index}-${paragraph}`} className="text-slate-200 leading-relaxed mb-4">
+                  {paragraph}
+                </p>
+              ))}
             </div>
 
             <div className="flex flex-wrap gap-2">
-              {["Web", "Problem Solver", "Team Player", "Fast Learner", "Detail Oriented"].map((trait) => (
+              {profile.traits.map((trait) => (
                 <Badge key={trait} variant="outline" className="border-emerald-500/30 text-emerald-400">
                   {trait}
                 </Badge>

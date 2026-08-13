@@ -35,6 +35,8 @@ export type PortfolioProfileData = typeof defaultPortfolioProfile & {
   isPersisted: boolean
 }
 
+export type PublicPortfolioProfile = Omit<PortfolioProfileData, "updatedAt" | "isPersisted">
+
 export async function getPortfolioProfile(): Promise<PortfolioProfileData> {
   await connectToDatabase()
   const profile = await PortfolioProfile.findOne({ singletonKey: "primary" }).lean()

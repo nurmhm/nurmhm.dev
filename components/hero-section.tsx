@@ -1,26 +1,28 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Github, Linkedin, Mail, MapPin, Phone, Download, Terminal, SunMedium } from "lucide-react"
+import { Github, Linkedin, Mail, MapPin, Phone, Download, Terminal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { DynamicCodeDisplay } from "./dynamic-code-display"
+import type { PublicPortfolioProfile } from "@/lib/profile"
 
 interface HeroSectionProps {
   onToggleCLI: () => void
+  profile: PublicPortfolioProfile
 }
 
-export function HeroSection({ onToggleCLI }: HeroSectionProps) {
+export function HeroSection({ onToggleCLI, profile }: HeroSectionProps) {
   const [downloadMessage, setDownloadMessage] = useState<string | null>(null)
 
   const handleDownloadResume = () => {
-    setDownloadMessage("Simulating download... (In a real app, your resume would download here!)")
-      const link = document.createElement("a")
-  link.href = "/nur_resume.pdf"
-  link.download = "Nur_Md_Resume.pdf"
-  document.body.appendChild(link)
-  link.click()
-  document.body.removeChild(link)
+    setDownloadMessage("Your resume download has started.")
+    const link = document.createElement("a")
+    link.href = profile.resumeUrl
+    link.download = `${profile.fullName.replace(/\s+/g, "_")}_Resume.pdf`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
     setTimeout(() => {
       setDownloadMessage(null)
     }, 3000)
@@ -29,9 +31,9 @@ export function HeroSection({ onToggleCLI }: HeroSectionProps) {
   const codeSnippets = [
     `// Web Development
 const developer = {
-  name: "Nur Mohammad",
-  role: "Web Developer",
-  stack: ["Next.js", "Node.js", "Prisma", "PostgreSQL"],
+  name: "${profile.fullName}",
+  role: "${profile.professionalTitle}",
+  stack: ${JSON.stringify(profile.technologies.slice(0, 4))},
   passion: "Building enterprise solutions"
 };`,
     `// Enterprise ERP Solutions
@@ -79,7 +81,7 @@ class HealthcareApp {
               className="drop-shadow-lg"
             >
               <h1 className="text-5xl lg:text-7xl font-bold bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent leading-tight">
-                Nur Mohammad
+                {profile.fullName}
               </h1>
             </motion.div>
 
@@ -89,8 +91,8 @@ class HealthcareApp {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="drop-shadow-md"
             >
-              <p className="text-2xl lg:text-3xl text-white font-semibold">Web Developer</p>
-              <p className="text-lg text-emerald-400 font-medium mt-1">Next.js • Node.js • Prisma • PostgreSQL</p>
+              <p className="text-2xl lg:text-3xl text-white font-semibold">{profile.professionalTitle}</p>
+              <p className="text-lg text-emerald-400 font-medium mt-1">{profile.tagline}</p>
             </motion.div>
           </div>
 
@@ -101,13 +103,12 @@ class HealthcareApp {
             className="space-y-4"
           >
             <p className="text-lg text-slate-200 leading-relaxed max-w-2xl">
-              Web Developer with 1.5+ years of experience building enterprise-grade applications. Currently at{" "}
-              <span className="text-emerald-400 font-semibold">Trodad International</span> developing E-commerce ERP,
-              Doctor Appointment Systems, Hospital Portfolio, and Business Management platforms.
+              {profile.shortBio} Currently at{" "}
+              <span className="text-emerald-400 font-semibold">{profile.currentCompany}</span>.
             </p>
 
             <div className="flex flex-wrap gap-2">
-              {["Next.js", "Node.js", "Prisma", "PostgreSQL", "TypeScript", "React"].map((tech) => (
+              {profile.technologies.map((tech) => (
                 <span
                   key={tech}
                   className="px-3 py-1 bg-slate-800/80 border border-slate-700 rounded-full text-sm text-slate-200"
@@ -120,15 +121,15 @@ class HealthcareApp {
             <div className="flex flex-wrap gap-4 text-slate-200">
               <div className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-emerald-400" />
-                <span>+8801770514004</span>
+                <span>{profile.phone}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-cyan-400" />
-                <span>nurmhm.dev@gmail.com</span>
+                <span>{profile.email}</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-blue-400" />
-                <span>Dhaka, Bangladesh</span>
+                <span>{profile.location}</span>
               </div>
             </div>
           </motion.div>
@@ -165,7 +166,7 @@ class HealthcareApp {
                 className="border-slate-600 hover:bg-slate-800 bg-transparent text-slate-200"
                 asChild
               >
-                <a href="https://github.com/nurmhm" target="_blank" rel="noopener noreferrer" title="GitHub Profile">
+                <a href={profile.githubUrl} target="_blank" rel="noopener noreferrer" title="GitHub Profile">
                   <Github className="w-5 h-5" />
                 </a>
               </Button>
@@ -176,7 +177,7 @@ class HealthcareApp {
                 asChild
               >
                 <a
-                  href="https://linkedin.com/in/nurmhm7228"
+                  href={profile.linkedinUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   title="LinkedIn Profile"
@@ -191,7 +192,7 @@ class HealthcareApp {
                 className="border-slate-600 hover:bg-slate-800 bg-transparent text-slate-200"
                 asChild
               >
-                <a href="mailto:nurmhm.dev@gmail.com" title="Send Email">
+                <a href={`mailto:${profile.email}`} title="Send Email">
                   <Mail className="w-5 h-5" />
                 </a>
               </Button>
@@ -202,7 +203,7 @@ class HealthcareApp {
                 asChild
               >
                 <a
-                  href="https://medium.com/@nurmhm"
+                  href={profile.mediumUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   title="Medium Profile"
@@ -239,8 +240,8 @@ class HealthcareApp {
             className="absolute lg:-bottom-8  -bottom-1 -right-1 lg:-right-2 w-24 h-24 rounded-full overflow-hidden border-4 border-emerald-500/50 shadow-xl z-20"
           >
             <img
-              src="/akash.jpeg"
-              alt="Nur Mohammad's professional headshot"
+              src={profile.portraitUrl}
+              alt={`${profile.fullName}'s professional headshot`}
               className="w-full h-full object-cover"
             />
           </motion.div>

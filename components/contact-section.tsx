@@ -9,8 +9,9 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Mail, Phone, MapPin, Github, Linkedin, Send, Clock, CheckCircle } from "lucide-react"
 import { useState } from "react"
+import type { PublicPortfolioProfile } from "@/lib/profile"
 
-export function ContactSection() {
+export function ContactSection({ profile }: { profile: PublicPortfolioProfile }) {
   const [formStatus, setFormStatus] = useState<"idle" | "submitting" | "success" | "error">("idle")
   const [message, setMessage] = useState<string | null>(null)
 
@@ -18,21 +19,21 @@ export function ContactSection() {
     {
       icon: Mail,
       label: "Email",
-      value: "nurmhm.dev@gmail.com",
-      href: "mailto:nurmhm.dev@gmail.com",
+      value: profile.email,
+      href: `mailto:${profile.email}`,
       color: "text-blue-400",
     },
     {
       icon: Phone,
       label: "Phone",
-      value: "+8801770514004",
-      href: "tel:+8801770514004",
+      value: profile.phone,
+      href: `tel:${profile.phone.replace(/\s/g, "")}`,
       color: "text-green-400",
     },
     {
       icon: MapPin,
       label: "Location",
-      value: "Dhaka, Bangladesh",
+      value: profile.location,
       href: "#",
       color: "text-purple-400",
     },
@@ -42,15 +43,15 @@ export function ContactSection() {
     {
       icon: Github,
       label: "GitHub",
-      value: "github.com/nurmhm",
-      href: "https://github.com/nurmhm",
+      value: profile.githubUrl.replace(/^https?:\/\//, ""),
+      href: profile.githubUrl,
       color: "text-gray-400",
     },
     {
       icon: Linkedin,
       label: "LinkedIn",
-      value: "linkedin.com/in/nurmhm7228",
-      href: "https://linkedin.com/in/nurmhm7228",
+      value: profile.linkedinUrl.replace(/^https?:\/\//, ""),
+      href: profile.linkedinUrl,
       color: "text-blue-400",
     },
   ]
@@ -171,15 +172,23 @@ export function ContactSection() {
               <CardContent className="space-y-4">
                 <div className="flex items-center gap-3">
                   <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span className="text-slate-200">Available for freelance projects</span>
+                  <span className="text-slate-200">
+                    {profile.availableForFreelance
+                      ? "Available for freelance projects"
+                      : "Currently unavailable for freelance projects"}
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <CheckCircle className="w-5 h-5 text-green-400" />
-                  <span className="text-slate-200">Open to full-time opportunities</span>
+                  <span className="text-slate-200">
+                    {profile.openToFullTime
+                      ? "Open to full-time opportunities"
+                      : "Not currently seeking full-time opportunities"}
+                  </span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Clock className="w-5 h-5 text-blue-400" />
-                  <span className="text-slate-200">Response time: Within 24 hours</span>
+                  <span className="text-slate-200">Response time: {profile.responseTime}</span>
                 </div>
               </CardContent>
             </Card>
