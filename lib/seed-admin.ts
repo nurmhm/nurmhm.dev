@@ -1,41 +1,33 @@
-import dotenv from "dotenv"
-
-dotenv.config({ path: ".env.local" })
+import "./load-env"
 import bcrypt from "bcryptjs"
+import mongoose from "mongoose"
+import { connectToDatabase } from "./db"
 import { AdminUser } from "../model/user"
-import dbConnect from "./mongodb"
+
+// Creates the single admin account, or resets its password, from ADMIN_EMAIL / ADMIN_PASSWORD
+// (EMAIL / PASSWORD are accepted too, matching lib/env.ts).
 
 async function seedAdmin() {
-  await dbConnect()
+  const email = (process.env.ADMIN_EMAIL ?? process.env.EMAIL ?? "").trim().toLowerCase()
+  const password = process.env.ADMIN_PASSWORD ?? process.env.PASSWORD ?? ""
 
-  const email = "nurmhm@gmail.com"
-  const password = "admin123"
+  if (!email || !password) throw new Error("Set ADMIN_EMAIL and ADMIN_PASSWORD in .env or .env.local")
+  if (password.length < 12) throw new Error("ADMIN_PASSWORD must be at least 12 characters")
 
-  if (!email || !password) {
-    throw new Error("ADMIN_EMAIL and ADMIN_PASSWORD must be set")
-  }
-
-  const hashedPassword = await bcrypt.hash(password, 12)
-
+  await connectToDatabase()
+  const passwordHash = await bcrypt.hash(password, 12)
   const user = await AdminUser.findOneAndUpdate(
     { email },
-    {
-      email,
-      passwordHash: hashedPassword,
-    },
-    {
-      upsert: true,
-      new: true,
-      runValidators: true,
-    },
+    { email, passwordHash },
+    { upsert: true, new: true, runValidators: true },
   )
-
   console.log(`Admin user ready: ${user.email}`)
-
-  process.exit(0)
 }
 
-seedAdmin().catch((err) => {
-  console.error("Seed failed:", err)
-  process.exit(1)
-})
+seedAdmin()
+  .then(() => mongoose.disconnect())
+  .catch(async (error) => {
+    console.error("Seed failed:", error instanceof Error ? error.message : error)
+    await mongoose.disconnect().catch(() => {})
+    process.exit(1)
+  })

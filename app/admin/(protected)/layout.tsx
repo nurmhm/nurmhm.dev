@@ -1,11 +1,13 @@
 import Link from "next/link"
-import { BriefcaseBusiness, ExternalLink, FolderKanban, GraduationCap, LayoutDashboard, LogOut, MessageSquareQuote, Newspaper, UserRound, Wrench } from "lucide-react"
+import { BriefcaseBusiness, ExternalLink, FolderKanban, GraduationCap, HandCoins, Inbox, LayoutDashboard, LogOut, MessageSquareQuote, Newspaper, UserRound, Wrench } from "lucide-react"
 import { requireAdmin } from "@/lib/auth/guards"
 import { logoutAdmin } from "@/lib/actions/auth"
 
 const navigation = [
   { href: "/admin", label: "Overview", icon: LayoutDashboard },
+  { href: "/admin/leads", label: "Lead inbox", icon: Inbox },
   { href: "/admin/personal-information", label: "Personal information", icon: UserRound },
+  { href: "/admin/services", label: "Services & pricing", icon: HandCoins },
   { href: "/admin/skills", label: "Skills", icon: Wrench },
   { href: "/admin/experience", label: "Experience", icon: BriefcaseBusiness },
   { href: "/admin/projects", label: "Projects", icon: FolderKanban },

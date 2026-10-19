@@ -1,17 +1,50 @@
-import { CheckCircle2, CircleAlert, ExternalLink, Save } from "lucide-react"
+import { BanglaPanel, Checkbox, Field, PageHeader, SaveBar, Section, lines } from "@/components/admin/form-kit"
 import { updatePortfolioExperience } from "@/lib/actions/profile"
 import { getPortfolioProfile } from "@/lib/profile"
 
 type PageProps = { searchParams: { saved?: string; error?: string } }
-const inputClass = "mt-2 w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white outline-none transition focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-const labelClass = "block text-sm font-medium text-slate-200"
 
 export default async function ExperienceAdminPage({ searchParams }: PageProps) {
   const profile = await getPortfolioProfile()
-  return <div className="space-y-8"><div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-sm font-medium text-emerald-400">Site content</p><h1 className="mt-2 text-3xl font-bold">Experience section</h1><p className="mt-2 max-w-2xl text-slate-400">Manage your roles, achievements, and technologies. Add new entries in the profile defaults before exposing dynamic add/remove controls.</p></div><a href="/#experience" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm text-cyan-400">View section <ExternalLink className="h-4 w-4" /></a></div>
-    {searchParams.saved && <div className="flex items-center gap-3 rounded-md border border-emerald-800 bg-emerald-950/40 px-4 py-3 text-sm text-emerald-300"><CheckCircle2 className="h-5 w-5" /> Experience saved successfully.</div>}{searchParams.error && <div className="flex items-center gap-3 rounded-md border border-rose-900 bg-rose-950/40 px-4 py-3 text-sm text-rose-300"><CircleAlert className="h-5 w-5" /> Complete all required experience fields before saving.</div>}
-    <form action={updatePortfolioExperience} className="space-y-6"><input type="hidden" name="experienceCount" value={profile.experiences.length} /><fieldset className="grid gap-5 rounded-lg border border-slate-800 bg-slate-900 p-5"><legend className="px-2 text-lg font-semibold">Section content</legend><label className={labelClass}>Heading<input className={inputClass} name="experienceHeading" defaultValue={profile.experienceHeading} required /></label><label className={labelClass}>Description<textarea className={inputClass} name="experienceSectionDescription" defaultValue={profile.experienceDescription} rows={2} required /></label></fieldset>
-      {profile.experiences.map((experience, index) => <fieldset key={`${experience.company}-${index}`} className="grid gap-5 rounded-lg border border-slate-800 bg-slate-900 p-5 md:grid-cols-2"><legend className="px-2 text-lg font-semibold">Experience {index + 1}</legend><label className={labelClass}>Job title<input className={inputClass} name={`experienceTitle${index}`} defaultValue={experience.title} required /></label><label className={labelClass}>Company<input className={inputClass} name={`experienceCompany${index}`} defaultValue={experience.company} required /></label><label className={labelClass}>Location<input className={inputClass} name={`experienceLocation${index}`} defaultValue={experience.location} required /></label><label className={labelClass}>Period<input className={inputClass} name={`experiencePeriod${index}`} defaultValue={experience.period} required /></label><label className={labelClass}>Employment type<input className={inputClass} name={`experienceType${index}`} defaultValue={experience.employmentType} required /></label><label className="flex items-center gap-3 self-end rounded-md border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-slate-200"><input type="checkbox" name={`experienceCurrent${index}`} defaultChecked={experience.isCurrent} className="h-4 w-4 accent-emerald-500" />Current role</label><label className={`${labelClass} md:col-span-2`}>Description<textarea className={inputClass} name={`experienceDescription${index}`} defaultValue={experience.description} rows={3} required /></label><label className={labelClass}>Achievements <span className="font-normal text-slate-500">(one per line)</span><textarea className={inputClass} name={`experienceAchievements${index}`} defaultValue={experience.achievements.join("\n")} rows={6} required /></label><label className={labelClass}>Technologies <span className="font-normal text-slate-500">(comma separated)</span><textarea className={inputClass} name={`experienceTechnologies${index}`} defaultValue={experience.technologies.join(", ")} rows={6} required /></label></fieldset>)}
-      <div className="sticky bottom-4 flex justify-end rounded-lg border border-slate-800 bg-slate-900/95 p-4 shadow-xl backdrop-blur"><button type="submit" className="inline-flex items-center gap-2 rounded-md bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-emerald-400"><Save className="h-4 w-4" />Save experience</button></div></form>
-  </div>
+
+  return (
+    <div className="space-y-8">
+      <PageHeader title="Experience section" description="Your roles, achievements and technologies." anchor="experience" saved={searchParams.saved} error={searchParams.error} errorText="Complete all required experience fields before saving." />
+      <form action={updatePortfolioExperience} className="space-y-6">
+        <input type="hidden" name="experienceCount" value={profile.experiences.length} />
+        <Section title="Section content">
+          <Field label="Heading" name="experienceHeading" defaultValue={profile.experienceHeading} required />
+          <Field label="Description" name="experienceSectionDescription" defaultValue={profile.experienceDescription} required multiline rows={2} />
+          <BanglaPanel missing={!profile.experienceHeadingBn}>
+            <Field label="Heading" name="experienceHeadingBn" defaultValue={profile.experienceHeadingBn} bangla />
+            <Field label="Description" name="experienceSectionDescriptionBn" defaultValue={profile.experienceDescriptionBn} bangla multiline rows={2} />
+          </BanglaPanel>
+        </Section>
+
+        {profile.experiences.map((experience, index) => (
+          <Section key={`${experience.company}-${index}`} title={`Experience ${index + 1}`}>
+            <Field label="Job title" name={`experienceTitle${index}`} defaultValue={experience.title} required />
+            <Field label="Company" name={`experienceCompany${index}`} defaultValue={experience.company} required />
+            <Field label="Location" name={`experienceLocation${index}`} defaultValue={experience.location} required />
+            <Field label="Period" name={`experiencePeriod${index}`} defaultValue={experience.period} required />
+            <Field label="Employment type" name={`experienceType${index}`} defaultValue={experience.employmentType} required />
+            <Checkbox label="Current role" name={`experienceCurrent${index}`} defaultChecked={experience.isCurrent} />
+            <Field label="Description" name={`experienceDescription${index}`} defaultValue={experience.description} required multiline wide />
+            <Field label="Achievements" hint="one per line" name={`experienceAchievements${index}`} defaultValue={lines(experience.achievements)} required multiline rows={5} />
+            <Field label="Technologies" hint="comma separated" name={`experienceTechnologies${index}`} defaultValue={experience.technologies.join(", ")} required multiline rows={5} />
+            <BanglaPanel missing={!experience.titleBn || !experience.descriptionBn}>
+              <Field label="Job title" name={`experienceTitleBn${index}`} defaultValue={experience.titleBn} bangla />
+              <Field label="Employment type" name={`experienceTypeBn${index}`} defaultValue={experience.employmentTypeBn} bangla />
+              <Field label="Location" name={`experienceLocationBn${index}`} defaultValue={experience.locationBn} bangla />
+              <Field label="Period" name={`experiencePeriodBn${index}`} defaultValue={experience.periodBn} bangla />
+              <Field label="Description" name={`experienceDescriptionBn${index}`} defaultValue={experience.descriptionBn} bangla multiline wide />
+              <Field label="Achievements" hint="one per line" name={`experienceAchievementsBn${index}`} defaultValue={lines(experience.achievementsBn)} bangla multiline rows={5} wide />
+            </BanglaPanel>
+          </Section>
+        ))}
+
+        <SaveBar label="Save experience" />
+      </form>
+    </div>
+  )
 }

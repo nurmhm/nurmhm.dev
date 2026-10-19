@@ -2,45 +2,52 @@ import type React from "react"
 import type { Metadata, Viewport } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
+import { Hind_Siliguri } from "next/font/google"
+import { headers } from "next/headers"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 
+// Geist has no Bengali glyphs; this font is used for Bangla text (see globals.css).
+const bengali = Hind_Siliguri({ subsets: ["bengali"], weight: ["400", "500", "600", "700"], variable: "--font-bengali", display: "swap" })
+
 export const metadata: Metadata = {
-  title: "Nur Mohammad | Web Developer - Next.js, Node.js, Prisma, PostgreSQL",
+  ...(process.env.NEXT_PUBLIC_SITE_URL ? { metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL) } : {}),
+  title: "Nur Mohammad | Software Developer in Bangladesh — Web, Mobile, AI & ERP Software",
   description:
-    "Web Developer with 2+ years experience building enterprise applications. Currently at Trodad International developing E-commerce ERP, Healthcare Systems, and Business Management platforms using Next.js, Node.js, Prisma, and PostgreSQL.",
+    "Custom software for businesses in Bangladesh and worldwide: web applications, mobile apps, AI chatbots, e-commerce, ERP and business systems — planned, designed, built, tested and supported end-to-end, with one accountable point of contact.",
   keywords: [
-    "Web Developer",
-    "Next.js Developer",
-    "Node.js Developer",
-    "React Developer",
-    "Prisma",
-    "PostgreSQL",
-    "TypeScript",
-    "Bangladesh Developer",
-    "Enterprise Applications",
-    "ERP Systems",
-    "Healthcare Software",
+    "Software Developer Bangladesh",
+    "Freelance Web Developer Bangladesh",
+    "Mobile App Developer Bangladesh",
+    "Hire Full-Stack Developer",
+    "AI Chatbot Developer",
+    "Custom Web Application",
+    "E-commerce Website Bangladesh",
+    "ERP Software Bangladesh",
+    "MVP Development",
+    "Dhaka Software Developer",
+    "সফটওয়্যার ডেভেলপার",
   ],
   authors: [{ name: "Nur Mohammad", url: "https://github.com/nurmhm" }],
   creator: "Nur Mohammad",
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "Nur Mohammad | Web Developer",
-    description: "Building enterprise-grade applications with Next.js, Node.js, Prisma & PostgreSQL",
-    siteName: "Nur Mohammad Portfolio",
+    alternateLocale: ["bn_BD"],
+    title: "Nur Mohammad | Software Developer — Web, Mobile, AI & Business Software",
+    description: "Web, mobile, AI and business software — delivered end-to-end, with one person accountable.",
+    siteName: "Nur Mohammad",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Nur Mohammad | Web Developer",
-    description: "Building enterprise-grade applications with Next.js, Node.js, Prisma & PostgreSQL",
+    title: "Nur Mohammad | Software Developer — Web, Mobile, AI & Business Software",
+    description: "Web, mobile, AI and business software — delivered end-to-end, with one person accountable.",
   },
   robots: {
     index: true,
     follow: true,
   },
-    generator: 'v0.app'
+  generator: "v0.app",
 }
 
 export const viewport: Viewport = {
@@ -49,13 +56,15 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // middleware.ts sets x-locale for /bn so the document language is correct for screen readers and search engines.
+  const lang = (await headers()).get("x-locale") === "bn" ? "bn" : "en"
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`} suppressHydrationWarning>
+    <html lang={lang} className={`${GeistSans.variable} ${GeistMono.variable} ${bengali.variable}`} suppressHydrationWarning>
       <body className="antialiased">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
           {children}

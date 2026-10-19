@@ -5,7 +5,8 @@ import type React from "react"
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Terminal, Menu, X } from "lucide-react"
+import { Languages, Terminal, Menu, X } from "lucide-react"
+import { useI18n } from "@/components/i18n-provider"
 import type { PublicPortfolioProfile } from "@/lib/profile"
 
 interface NavigationProps {
@@ -14,6 +15,7 @@ interface NavigationProps {
 }
 
 export function Navigation({ onToggleCLI, profile }: NavigationProps) {
+  const { t } = useI18n()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
@@ -26,14 +28,11 @@ export function Navigation({ onToggleCLI, profile }: NavigationProps) {
   }, [])
 
   const navItems = [
-    { name: "About", href: "#about" },
-    { name: "Skills", href: "#skills" },
-    { name: "Experience", href: "#experience" },
-    { name: "Projects", href: "#projects" },
-    { name: "Testimonials", href: "#testimonials" },
-    { name: "Blog", href: "#blog" },
-    { name: "Education", href: "#education" },
-    { name: "Contact", href: "#contact" },
+    { name: t.nav.services, href: "#services" },
+    { name: t.nav.work, href: "#projects" },
+    { name: t.nav.process, href: "#process" },
+    { name: t.nav.about, href: "#about" },
+    { name: t.nav.faq, href: "#faq" },
   ]
 
   const handleNavLinkClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>, href: string) => {
@@ -79,17 +78,26 @@ export function Navigation({ onToggleCLI, profile }: NavigationProps) {
             ))}
             <Button
               onClick={onToggleCLI}
-              variant="outline"
+              variant="ghost"
               size="sm"
-              className="border-emerald-500 text-emerald-400 hover:bg-emerald-500/10 bg-transparent"
+              className="text-slate-400 hover:bg-slate-800 hover:text-emerald-300"
+              title={t.nav.openCli}
             >
-              <Terminal className="w-4 h-4 mr-2" />
-              CLI
+              <Terminal className="w-4 h-4" />
             </Button>
+            <LanguageSwitch />
+            <a
+              href="#contact"
+              onClick={(e) => handleNavLinkClick(e, "#contact")}
+              className="rounded-md bg-gradient-to-r from-emerald-500 to-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:brightness-110"
+            >
+              {t.nav.startProject}
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="flex items-center gap-2 md:hidden">
+            <LanguageSwitch />
             <Button
               variant="ghost"
               size="sm"
@@ -120,7 +128,16 @@ export function Navigation({ onToggleCLI, profile }: NavigationProps) {
                   {item.name}
                 </a>
               ))}
-              <div className="px-4 pt-2">
+              <div className="px-4">
+                <a
+                  href="#contact"
+                  onClick={(e) => handleNavLinkClick(e, "#contact")}
+                  className="block rounded-md bg-gradient-to-r from-emerald-500 to-cyan-500 px-4 py-2.5 text-center text-sm font-semibold text-slate-950"
+                >
+                  {t.nav.startProject}
+                </a>
+              </div>
+              <div className="px-4">
                 <Button
                   onClick={() => {
                     onToggleCLI()
@@ -131,7 +148,7 @@ export function Navigation({ onToggleCLI, profile }: NavigationProps) {
                   className="border-emerald-500 text-emerald-400 hover:bg-emerald-500/10 w-full bg-transparent"
                 >
                   <Terminal className="w-4 h-4 mr-2" />
-                  Open CLI
+                  {t.nav.openCli}
                 </Button>
               </div>
             </div>
@@ -139,5 +156,20 @@ export function Navigation({ onToggleCLI, profile }: NavigationProps) {
         )}
       </div>
     </motion.nav>
+  )
+}
+
+function LanguageSwitch() {
+  const { t } = useI18n()
+  return (
+    <a
+      href={t.langSwitch.href}
+      hrefLang={t.langSwitch.hrefLang}
+      lang={t.langSwitch.hrefLang}
+      className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 px-3 py-1 text-sm text-slate-200 transition hover:border-emerald-400 hover:text-emerald-300"
+    >
+      <Languages className="h-3.5 w-3.5" />
+      {t.langSwitch.label}
+    </a>
   )
 }

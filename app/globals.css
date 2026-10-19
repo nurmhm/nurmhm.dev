@@ -88,4 +88,9 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Bangla text needs a Bengali-script font (Hind Siliguri also covers Latin text on the Bangla page). */
+  html[lang="bn"] body,
+  [lang="bn"] {
+    font-family: var(--font-bengali), var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  }
 }

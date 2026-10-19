@@ -1,7 +1,16 @@
 import { NextResponse, type NextRequest } from "next/server"
 
 export function middleware(request: NextRequest) {
-  if (!request.nextUrl.pathname.startsWith("/admin") || request.nextUrl.pathname === "/admin/login") {
+  const { pathname } = request.nextUrl
+
+  // Tell the root layout which document language to render.
+  if (pathname === "/bn" || pathname.startsWith("/bn/")) {
+    const requestHeaders = new Headers(request.headers)
+    requestHeaders.set("x-locale", "bn")
+    return NextResponse.next({ request: { headers: requestHeaders } })
+  }
+
+  if (!pathname.startsWith("/admin") || pathname === "/admin/login") {
     return NextResponse.next()
   }
 
@@ -13,4 +22,4 @@ export function middleware(request: NextRequest) {
   return NextResponse.next()
 }
 
-export const config = { matcher: ["/admin/:path*"] }
+export const config = { matcher: ["/admin/:path*", "/bn", "/bn/:path*"] }

@@ -1,15 +1,47 @@
-import { CheckCircle2, CircleAlert, ExternalLink, Save } from "lucide-react"
+import { BanglaPanel, Field, PageHeader, SaveBar, Section } from "@/components/admin/form-kit"
 import { updatePortfolioBlog } from "@/lib/actions/profile"
 import { getPortfolioProfile } from "@/lib/profile"
 
 type PageProps = { searchParams: { saved?: string; error?: string } }
-const inputClass = "mt-2 w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-const labelClass = "block text-sm font-medium text-slate-200"
 
 export default async function BlogAdminPage({ searchParams }: PageProps) {
   const profile = await getPortfolioProfile()
-  return <div className="space-y-8"><Header searchParams={searchParams} /><form action={updatePortfolioBlog} className="space-y-6"><input type="hidden" name="blogCount" value={profile.blogPosts.length} /><fieldset className="grid gap-5 rounded-lg border border-slate-800 bg-slate-900 p-5"><legend className="px-2 text-lg font-semibold">Section content</legend><label className={labelClass}>Heading<input className={inputClass} name="blogHeading" defaultValue={profile.blogHeading} required /></label><label className={labelClass}>Description<textarea className={inputClass} name="blogSectionDescription" defaultValue={profile.blogDescription} rows={2} required /></label></fieldset>{profile.blogPosts.map((post, index) => <fieldset key={`${post.title}-${index}`} className="grid gap-5 rounded-lg border border-slate-800 bg-slate-900 p-5 md:grid-cols-2"><legend className="px-2 text-lg font-semibold">Article {index + 1}</legend><label className={`${labelClass} md:col-span-2`}>Title<input className={inputClass} name={`blogTitle${index}`} defaultValue={post.title} required /></label><label className={labelClass}>Date<input className={inputClass} name={`blogDate${index}`} defaultValue={post.date} required /></label><label className={labelClass}>Read time<input className={inputClass} name={`blogReadTime${index}`} defaultValue={post.readTime} required /></label><label className={`${labelClass} md:col-span-2`}>Excerpt<textarea className={inputClass} name={`blogExcerpt${index}`} defaultValue={post.excerpt} rows={3} required /></label><label className={labelClass}>Image path or URL<input className={inputClass} name={`blogImage${index}`} defaultValue={post.image} required /></label><label className={labelClass}>Article URL<input className={inputClass} name={`blogLink${index}`} type="url" defaultValue={post.link} required /></label><label className={`${labelClass} md:col-span-2`}>Tags <span className="font-normal text-slate-500">(comma separated)</span><input className={inputClass} name={`blogTags${index}`} defaultValue={post.tags.join(", ")} required /></label></fieldset>)}<SaveButton /></form></div>
+
+  return (
+    <div className="space-y-8">
+      <PageHeader
+        title="Blog section"
+        description="Article cards linking to your posts. Articles are shown in their original language on both versions of the site."
+        anchor="blog"
+        saved={searchParams.saved}
+        error={searchParams.error}
+        errorText="Check all required fields and URLs before saving."
+      />
+      <form action={updatePortfolioBlog} className="space-y-6">
+        <input type="hidden" name="blogCount" value={profile.blogPosts.length} />
+        <Section title="Section content">
+          <Field label="Heading" name="blogHeading" defaultValue={profile.blogHeading} required />
+          <Field label="Description" name="blogSectionDescription" defaultValue={profile.blogDescription} required multiline rows={2} />
+          <BanglaPanel missing={!profile.blogHeadingBn}>
+            <Field label="Heading" name="blogHeadingBn" defaultValue={profile.blogHeadingBn} bangla />
+            <Field label="Description" name="blogSectionDescriptionBn" defaultValue={profile.blogDescriptionBn} bangla multiline rows={2} />
+          </BanglaPanel>
+        </Section>
+
+        {profile.blogPosts.map((post, index) => (
+          <Section key={`${post.title}-${index}`} title={`Article ${index + 1}`}>
+            <Field label="Title" name={`blogTitle${index}`} defaultValue={post.title} required wide />
+            <Field label="Date" name={`blogDate${index}`} defaultValue={post.date} required />
+            <Field label="Read time" name={`blogReadTime${index}`} defaultValue={post.readTime} required />
+            <Field label="Excerpt" name={`blogExcerpt${index}`} defaultValue={post.excerpt} required multiline wide />
+            <Field label="Image path or URL" name={`blogImage${index}`} defaultValue={post.image} required />
+            <Field label="Article URL" name={`blogLink${index}`} type="url" defaultValue={post.link} required />
+            <Field label="Tags" hint="comma separated" name={`blogTags${index}`} defaultValue={post.tags.join(", ")} required wide />
+          </Section>
+        ))}
+
+        <SaveBar label="Save blog" />
+      </form>
+    </div>
+  )
 }
-function Header({ searchParams }: { searchParams: PageProps["searchParams"] }) { return <><div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-sm font-medium text-emerald-400">Site content</p><h1 className="mt-2 text-3xl font-bold">Blog section</h1><p className="mt-2 max-w-2xl text-slate-400">Manage article cards, links, images, and metadata.</p></div><a href="/#blog" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm text-cyan-400">View section <ExternalLink className="h-4 w-4" /></a></div>{searchParams.saved && <Notice icon={<CheckCircle2 className="h-5 w-5" />} text="Blog saved successfully." success />}{searchParams.error && <Notice icon={<CircleAlert className="h-5 w-5" />} text="Check all required fields and URLs before saving." />}</> }
-function Notice({ icon, text, success = false }: { icon: React.ReactNode; text: string; success?: boolean }) { return <div className={`flex items-center gap-3 rounded-md border px-4 py-3 text-sm ${success ? "border-emerald-800 bg-emerald-950/40 text-emerald-300" : "border-rose-900 bg-rose-950/40 text-rose-300"}`}>{icon}{text}</div> }
-function SaveButton() { return <div className="sticky bottom-4 flex justify-end rounded-lg border border-slate-800 bg-slate-900/95 p-4 shadow-xl backdrop-blur"><button type="submit" className="inline-flex items-center gap-2 rounded-md bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-emerald-400"><Save className="h-4 w-4" />Save blog</button></div> }

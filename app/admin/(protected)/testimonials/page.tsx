@@ -1,16 +1,45 @@
-import { CheckCircle2, CircleAlert, ExternalLink, Save } from "lucide-react"
+import { BanglaPanel, Field, PageHeader, SaveBar, Section } from "@/components/admin/form-kit"
 import { updatePortfolioTestimonials } from "@/lib/actions/profile"
 import { getPortfolioProfile } from "@/lib/profile"
 
 type PageProps = { searchParams: { saved?: string; error?: string } }
-const inputClass = "mt-2 w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500"
-const labelClass = "block text-sm font-medium text-slate-200"
 
 export default async function TestimonialsAdminPage({ searchParams }: PageProps) {
   const profile = await getPortfolioProfile()
-  return <div className="space-y-8"><Header title="Testimonials section" anchor="testimonials" description="Manage the recommendations displayed on your portfolio." searchParams={searchParams} message="Testimonials" /><form action={updatePortfolioTestimonials} className="space-y-6"><input type="hidden" name="testimonialCount" value={profile.testimonials.length} /><fieldset className="grid gap-5 rounded-lg border border-slate-800 bg-slate-900 p-5"><legend className="px-2 text-lg font-semibold">Section content</legend><label className={labelClass}>Heading<input className={inputClass} name="testimonialsHeading" defaultValue={profile.testimonialsHeading} required /></label><label className={labelClass}>Description<textarea className={inputClass} name="testimonialsSectionDescription" defaultValue={profile.testimonialsDescription} rows={2} required /></label></fieldset>{profile.testimonials.map((item, index) => <fieldset key={`${item.name}-${index}`} className="grid gap-5 rounded-lg border border-slate-800 bg-slate-900 p-5 md:grid-cols-2"><legend className="px-2 text-lg font-semibold">Testimonial {index + 1}</legend><label className={`${labelClass} md:col-span-2`}>Quote<textarea className={inputClass} name={`testimonialQuote${index}`} defaultValue={item.quote} rows={4} required /></label><label className={labelClass}>Name<input className={inputClass} name={`testimonialName${index}`} defaultValue={item.name} required /></label><label className={labelClass}>Title<input className={inputClass} name={`testimonialTitle${index}`} defaultValue={item.title} required /></label><label className={labelClass}>Company<input className={inputClass} name={`testimonialCompany${index}`} defaultValue={item.company} required /></label><label className={labelClass}>Rating (1-5)<input className={inputClass} name={`testimonialRating${index}`} type="number" min="1" max="5" defaultValue={item.rating} required /></label><label className={`${labelClass} md:col-span-2`}>Avatar path or URL<input className={inputClass} name={`testimonialAvatar${index}`} defaultValue={item.avatar} required /></label></fieldset>)}<SaveButton label="Save testimonials" /></form></div>
-}
 
-function Header({ title, anchor, description, searchParams, message }: { title: string; anchor: string; description: string; searchParams: PageProps["searchParams"]; message: string }) { return <><div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-sm font-medium text-emerald-400">Site content</p><h1 className="mt-2 text-3xl font-bold">{title}</h1><p className="mt-2 max-w-2xl text-slate-400">{description}</p></div><a href={`/#${anchor}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm text-cyan-400">View section <ExternalLink className="h-4 w-4" /></a></div>{searchParams.saved && <Notice icon={<CheckCircle2 className="h-5 w-5" />} text={`${message} saved successfully.`} success />}{searchParams.error && <Notice icon={<CircleAlert className="h-5 w-5" />} text="Check all required fields before saving." />}</> }
-function Notice({ icon, text, success = false }: { icon: React.ReactNode; text: string; success?: boolean }) { return <div className={`flex items-center gap-3 rounded-md border px-4 py-3 text-sm ${success ? "border-emerald-800 bg-emerald-950/40 text-emerald-300" : "border-rose-900 bg-rose-950/40 text-rose-300"}`}>{icon}{text}</div> }
-function SaveButton({ label }: { label: string }) { return <div className="sticky bottom-4 flex justify-end rounded-lg border border-slate-800 bg-slate-900/95 p-4 shadow-xl backdrop-blur"><button type="submit" className="inline-flex items-center gap-2 rounded-md bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-emerald-400"><Save className="h-4 w-4" />{label}</button></div> }
+  return (
+    <div className="space-y-8">
+      <PageHeader
+        title="Testimonials section"
+        description="Real recommendations only. Quotes are shown exactly as written, in their original language, on both versions of the site."
+        anchor="testimonials"
+        saved={searchParams.saved}
+        error={searchParams.error}
+      />
+      <form action={updatePortfolioTestimonials} className="space-y-6">
+        <input type="hidden" name="testimonialCount" value={profile.testimonials.length} />
+        <Section title="Section content">
+          <Field label="Heading" name="testimonialsHeading" defaultValue={profile.testimonialsHeading} required />
+          <Field label="Description" name="testimonialsSectionDescription" defaultValue={profile.testimonialsDescription} required multiline rows={2} />
+          <BanglaPanel missing={!profile.testimonialsHeadingBn}>
+            <Field label="Heading" name="testimonialsHeadingBn" defaultValue={profile.testimonialsHeadingBn} bangla />
+            <Field label="Description" name="testimonialsSectionDescriptionBn" defaultValue={profile.testimonialsDescriptionBn} bangla multiline rows={2} />
+          </BanglaPanel>
+        </Section>
+
+        {profile.testimonials.map((item, index) => (
+          <Section key={`${item.name}-${index}`} title={`Testimonial ${index + 1}`}>
+            <Field label="Quote" name={`testimonialQuote${index}`} defaultValue={item.quote} required multiline rows={4} wide />
+            <Field label="Name" name={`testimonialName${index}`} defaultValue={item.name} required />
+            <Field label="Title" name={`testimonialTitle${index}`} defaultValue={item.title} required />
+            <Field label="Company" name={`testimonialCompany${index}`} defaultValue={item.company} required />
+            <Field label="Rating (1-5)" name={`testimonialRating${index}`} type="number" defaultValue={item.rating} required />
+            <Field label="Avatar path or URL" name={`testimonialAvatar${index}`} defaultValue={item.avatar} required wide />
+          </Section>
+        ))}
+
+        <SaveBar label="Save testimonials" />
+      </form>
+    </div>
+  )
+}

@@ -1,63 +1,35 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Card, CardContent } from "@/components/ui/card"
 import { Quote, Star } from "lucide-react"
+import { useI18n } from "@/components/i18n-provider"
+import { SectionHeading } from "@/components/section-heading"
 import type { PublicPortfolioProfile } from "@/lib/profile"
 
 export function TestimonialsSection({ profile }: { profile: PublicPortfolioProfile }) {
-  return (
-    <section id="testimonials" className="py-20 bg-slate-950 text-white">
-      <div className="max-w-6xl mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl lg:text-5xl font-bold mb-4 bg-gradient-to-r from-pink-400 to-rose-400 bg-clip-text text-transparent">
-            {profile.testimonialsHeading}
-          </h2>
-          <p className="text-xl text-slate-300 max-w-3xl mx-auto">{profile.testimonialsDescription}</p>
-        </motion.div>
+  const { t } = useI18n()
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+  return (
+    <section id="testimonials" className="bg-slate-950 py-24">
+      <div className="container mx-auto px-4">
+        <SectionHeading eyebrow={t.testimonials.eyebrow} title={profile.testimonialsHeading} description={profile.testimonialsDescription} />
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {profile.testimonials.map((testimonial, index) => (
-            <motion.div
-              key={`${testimonial.name}-${index}`}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <Card className="bg-slate-900/50 border-slate-700 hover:border-pink-500/50 transition-all duration-300 h-full flex flex-col">
-                <CardContent className="p-6 flex-1 flex flex-col justify-between">
-                  <div>
-                    <Quote className="w-8 h-8 text-pink-400 mb-4" />
-                    <div className="flex gap-1 mb-4">
-                      {Array.from({ length: testimonial.rating }).map((_, i) => (
-                        <Star key={i} className="w-4 h-4 text-amber-400 fill-amber-400" />
-                      ))}
-                    </div>
-                    <p className="text-slate-200 leading-relaxed mb-6">"{testimonial.quote}"</p>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <img
-                      src={testimonial.avatar || "/placeholder.svg"}
-                      alt={testimonial.name}
-                      className="w-12 h-12 rounded-full object-cover border-2 border-pink-500"
-                    />
-                    <div>
-                      <p className="font-bold text-white">{testimonial.name}</p>
-                      <p className="text-sm text-slate-300">
-                        {testimonial.title}, {testimonial.company}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
+            <motion.figure key={`${testimonial.name}-${index}`} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.08 }} viewport={{ once: true }} className="relative flex flex-col rounded-xl border border-slate-800 bg-slate-900/60 p-6">
+              <Quote className="absolute right-5 top-5 h-8 w-8 text-emerald-500/20" aria-hidden />
+              <div className="flex gap-0.5" aria-label={`${testimonial.rating}/5`}>
+                {Array.from({ length: testimonial.rating }).map((_, starIndex) => <Star key={starIndex} className="h-4 w-4 fill-amber-400 text-amber-400" />)}
+              </div>
+              {/* Quotes are shown exactly as given, in their original language. */}
+              <blockquote lang="en" className="mt-4 flex-1 leading-relaxed text-slate-200">“{testimonial.quote}”</blockquote>
+              <figcaption className="mt-6 flex items-center gap-3 border-t border-slate-800 pt-5">
+                <img src={testimonial.avatar || "/placeholder-user.jpg"} alt={testimonial.name} className="h-11 w-11 rounded-full border border-slate-700 object-cover" />
+                <div>
+                  <p className="font-semibold text-white">{testimonial.name}</p>
+                  <p className="text-sm text-slate-400">{testimonial.title}, {testimonial.company}</p>
+                </div>
+              </figcaption>
+            </motion.figure>
           ))}
         </div>
       </div>

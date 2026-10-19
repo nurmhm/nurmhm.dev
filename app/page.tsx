@@ -1,11 +1,12 @@
-import { PortfolioContent } from "@/components/portfolio-content"
-import { getPortfolioProfile } from "@/lib/profile"
+import type { Metadata } from "next"
+import { PortfolioPage } from "@/components/portfolio-page"
 
 export const dynamic = "force-dynamic"
 
-export default async function Home() {
-  const profile = await getPortfolioProfile()
-  const { updatedAt: _updatedAt, isPersisted: _isPersisted, ...publicProfile } = profile
+export const metadata: Metadata = {
+  alternates: { canonical: "/", languages: { en: "/", bn: "/bn" } },
+}
 
-  return <PortfolioContent profile={publicProfile} currentYear={new Date().getFullYear()} />
+export default function Home() {
+  return <PortfolioPage locale="en" />
 }

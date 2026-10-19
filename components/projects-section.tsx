@@ -1,12 +1,70 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { ExternalLink, Github, Server } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
+import { ExternalLink, Github, Lightbulb, Target, Trophy, UserCheck } from "lucide-react"
+import { useI18n } from "@/components/i18n-provider"
+import { SectionHeading } from "@/components/section-heading"
 import type { PublicPortfolioProfile } from "@/lib/profile"
 
 export function ProjectsSection({ profile }: { profile: PublicPortfolioProfile }) {
-  return <section id="projects" className="bg-slate-900 py-20 text-white"><div className="container mx-auto px-4"><motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="mb-14 text-center"><h2 className="mb-4 bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-4xl font-bold text-transparent lg:text-5xl">{profile.projectsHeading}</h2><p className="mx-auto max-w-3xl text-xl text-slate-300">{profile.projectsDescription}</p></motion.div><div className="grid gap-8 lg:grid-cols-3">{profile.projects.map((project, index) => <motion.div key={project.title} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: index * 0.1 }} viewport={{ once: true }}><Card className="flex h-full flex-col overflow-hidden border-slate-700 bg-slate-800/50"><div className="relative aspect-video overflow-hidden bg-slate-800"><img src={project.image || "/placeholder.svg"} alt={project.title} className="h-full w-full object-cover" /><div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" /><Badge className="absolute right-4 top-4 bg-amber-600">{project.status}</Badge><Badge variant="outline" className="absolute bottom-4 left-4 border-slate-600 bg-slate-900/80 text-slate-200">{project.category}</Badge></div><div className="flex flex-1 flex-col space-y-4 p-6"><div><h3 className="text-2xl font-bold">{project.title}</h3><p className="mb-3 text-emerald-400">{project.subtitle}</p><p className="text-sm leading-relaxed text-slate-300">{project.description}</p></div><div><h4 className="mb-2 text-sm font-semibold text-cyan-400">Tech stack</h4><div className="flex flex-wrap gap-1.5">{project.technologies.map((tech) => <Badge key={tech} variant="outline" className="border-slate-600 text-xs text-slate-300">{tech}</Badge>)}</div></div><div className="flex-1"><h4 className="mb-2 text-sm font-semibold text-amber-400">Key features</h4><ul className="space-y-1 text-sm text-slate-300">{project.features.map((feature) => <li key={feature} className="flex gap-2"><span className="text-emerald-400">•</span>{feature}</li>)}</ul></div><div className="flex gap-3 pt-2">{project.liveUrl && <Button size="sm" className="flex-1 bg-emerald-600 hover:bg-emerald-500" asChild><a href={project.liveUrl} target="_blank" rel="noopener noreferrer"><ExternalLink className="mr-2 h-4 w-4" />Live demo</a></Button>}{project.githubUrl && <Button size="sm" variant="outline" className="flex-1 border-slate-600 bg-transparent text-slate-200" asChild><a href={project.githubUrl} target="_blank" rel="noopener noreferrer"><Github className="mr-2 h-4 w-4" />Code</a></Button>}{!project.liveUrl && !project.githubUrl && <Button size="sm" disabled variant="outline" className="flex-1"><Server className="mr-2 h-4 w-4" />In development</Button>}</div></div></Card></motion.div>)}</div></div></section>
+  const { t } = useI18n()
+  return (
+    <section id="projects" className="bg-slate-900 py-24">
+      <div className="container mx-auto px-4">
+        <SectionHeading eyebrow={t.projects.eyebrow} title={profile.projectsHeading} description={profile.projectsDescription} />
+        <div className="space-y-10">
+          {profile.projects.map((project, index) => {
+            const hasCaseStudy = Boolean(project.problem || project.approach || project.result)
+            return (
+              <motion.article key={`${project.title}-${index}`} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true, margin: "-80px" }} className="grid overflow-hidden rounded-2xl border border-slate-800 bg-slate-950/60 lg:grid-cols-2">
+                <div className={`group relative min-h-64 overflow-hidden bg-slate-800 ${index % 2 ? "lg:order-2" : ""}`}>
+                  <img src={project.image || "/placeholder.svg"} alt={project.title} className="h-full w-full object-cover transition duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent" />
+                  <div className="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2">
+                    <span className="rounded-full bg-slate-950/80 px-3 py-1 text-xs text-slate-200 ring-1 ring-slate-700">{project.category}</span>
+                    <span className="rounded-full bg-emerald-500/20 px-3 py-1 text-xs text-emerald-300 ring-1 ring-emerald-500/40">{project.status}</span>
+                    {project.soloBuilt && <span className="inline-flex items-center gap-1 rounded-full bg-cyan-500/20 px-3 py-1 text-xs text-cyan-200 ring-1 ring-cyan-500/40"><UserCheck className="h-3 w-3" />{t.projects.soloBuilt}</span>}
+                  </div>
+                </div>
+
+                <div className="flex flex-col p-6 sm:p-8">
+                  <h3 className="text-2xl font-bold text-white">{project.title}</h3>
+                  <p className="mt-1 text-emerald-400">{project.subtitle}</p>
+                  {hasCaseStudy ? (
+                    <dl className="mt-6 space-y-4 text-sm">
+                      {project.problem && <CaseStep icon={Target} label={t.projects.problem} text={project.problem} />}
+                      {project.approach && <CaseStep icon={Lightbulb} label={t.projects.approach} text={project.approach} />}
+                      {project.result && <CaseStep icon={Trophy} label={t.projects.result} text={project.result} />}
+                    </dl>
+                  ) : (
+                    <p className="mt-4 text-sm leading-relaxed text-slate-300">{project.description}</p>
+                  )}
+                  <div className="mt-6 flex flex-wrap gap-1.5">
+                    {project.technologies.map((tech) => <span key={tech} className="rounded bg-slate-800 px-2 py-1 font-mono text-xs text-slate-300">{tech}</span>)}
+                  </div>
+                  <div className="mt-auto flex flex-wrap gap-3 pt-6">
+                    {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-md bg-emerald-500 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-emerald-400"><ExternalLink className="h-4 w-4" />{t.projects.live}</a>}
+                    {project.githubUrl && <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-md border border-slate-600 px-4 py-2 text-sm text-slate-200 hover:border-slate-400"><Github className="h-4 w-4" />{t.projects.code}</a>}
+                    {project.company && <span className="self-center text-xs text-slate-500">{t.projects.builtFor} {project.company}</span>}
+                  </div>
+                </div>
+              </motion.article>
+            )
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function CaseStep({ icon: Icon, label, text }: { icon: typeof Target; label: string; text: string }) {
+  return (
+    <div className="flex gap-3">
+      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-cyan-400" />
+      <div>
+        <dt className="font-semibold text-slate-100">{label}</dt>
+        <dd className="mt-0.5 leading-relaxed text-slate-300">{text}</dd>
+      </div>
+    </div>
+  )
 }
