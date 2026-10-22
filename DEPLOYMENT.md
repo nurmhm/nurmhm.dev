@@ -33,5 +33,6 @@ Local checks: `pnpm typecheck`, `pnpm build`, and
 `pnpm exec tsx --test tests/deployment.test.ts`. The regression tests mock database
 operations and do not connect to or modify a real database.
 
+
 References: [Vercel environment variables](https://vercel.com/docs/environment-variables),
 [MongoDB Atlas IP access lists](https://www.mongodb.com/docs/atlas/security/ip-access-list/).
