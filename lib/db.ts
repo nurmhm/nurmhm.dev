@@ -15,7 +15,14 @@ export async function connectToDatabase() {
   if (!uri) throw new Error("MONGODB_URI is not configured")
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(uri, { bufferCommands: false })
+    cached.promise = mongoose.connect(uri, {
+      bufferCommands: false,
+      serverSelectionTimeoutMS: 5000,
+    }).catch((error) => {
+      // A warm serverless instance must be able to retry after a failed connection.
+      cached.promise = null
+      throw error
+    })
   }
 
   cached.conn = await cached.promise

@@ -90,6 +90,21 @@ export async function getPortfolioProfile(): Promise<PortfolioProfileData> {
   return { ...mergeProfile(profile as unknown as PlainObject), updatedAt: profile.updatedAt, isPersisted: true }
 }
 
+/** Keep public pages available during database outages; admin reads still surface failures. */
+export async function getPublicPortfolioProfile(): Promise<PublicPortfolioProfile> {
+  try {
+    const { updatedAt: _updatedAt, isPersisted: _isPersisted, ...profile } = await getPortfolioProfile()
+    return profile
+  } catch (error) {
+    // Driver error messages can contain connection details, so only log the error type.
+    console.error(
+      "[portfolio] Could not load MongoDB profile; rendering bundled content. Check MONGODB_URI and MongoDB network access.",
+      { errorName: error instanceof Error ? error.name : "UnknownError" },
+    )
+    return defaultPortfolioProfile
+  }
+}
+
 export function getProfileCompleteness(profile: PortfolioProfileData) {
   const values = [
     profile.fullName,

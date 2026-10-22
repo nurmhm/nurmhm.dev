@@ -1,6 +1,6 @@
 import { PortfolioContent } from "@/components/portfolio-content"
 import type { Locale } from "@/lib/i18n"
-import { getPortfolioProfile, localizeProfile, type PublicPortfolioProfile } from "@/lib/profile"
+import { getPublicPortfolioProfile, localizeProfile, type PublicPortfolioProfile } from "@/lib/profile"
 
 function structuredData(profile: PublicPortfolioProfile, locale: Locale) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
@@ -39,7 +39,7 @@ function structuredData(profile: PublicPortfolioProfile, locale: Locale) {
 
 /** Server entry for the public page in either language; `/` renders English and `/bn` renders Bangla. */
 export async function PortfolioPage({ locale }: { locale: Locale }) {
-  const { updatedAt: _updatedAt, isPersisted: _isPersisted, ...rest } = await getPortfolioProfile()
+  const rest = await getPublicPortfolioProfile()
   // Lean subdocuments carry ObjectId `_id`s, which cannot cross into client components; round-trip to plain JSON.
   const profile = localizeProfile(JSON.parse(JSON.stringify(rest)) as PublicPortfolioProfile, locale)
 
