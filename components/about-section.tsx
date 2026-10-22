@@ -17,7 +17,7 @@ export function AboutSection({ profile }: { profile: PublicPortfolioProfile }) {
         <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }} viewport={{ once: true }} className="relative mx-auto w-full max-w-sm">
           <div className="absolute -inset-3 rounded-3xl bg-gradient-to-br from-emerald-500/40 via-cyan-500/20 to-transparent blur-2xl" aria-hidden />
           <div className="relative overflow-hidden rounded-3xl border border-slate-700/70 bg-slate-900">
-            <img src={profile.portraitUrl || "/placeholder-user.jpg"} alt={profile.fullName} className="aspect-[4/5] w-full object-cover" />
+            <img src={profile.portraitUrl || "/akash.jpeg"} alt={profile.fullName} className="aspect-[4/5] w-full object-cover" />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent p-5 pt-16">
               <p className="text-lg font-semibold text-white">{profile.fullName}</p>
               <p className="text-sm text-emerald-300">{profile.professionalTitle}</p>
